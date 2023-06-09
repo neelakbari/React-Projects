@@ -53,7 +53,7 @@ const Header = () => {
                             <span> $ {prod.price.split(".")[0]}</span>
                           </div>
                           <AiFillDelete
-                            fontSize="20px"
+                            fontSize="25px"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
                               dispatch({
