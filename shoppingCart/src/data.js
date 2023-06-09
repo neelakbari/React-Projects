@@ -3,7 +3,7 @@ export const products = [
     id: "b34e5e4c-8e77-4559-93e5-9b6f74f05d13",
     name: "Ergonomic Wooden Gloves",
     price: "889.61",
-    image: "http://placeimg.com/640/480",
+    image: "https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80",
     inStock: 0,
     fastDelivery: false,
     ratings: 2,
