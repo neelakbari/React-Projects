@@ -11,10 +11,12 @@ const cartReducer = (state, action) => {
         cart: state.cart.filter((c) => c.id !== action.payload.id),
       };
     case "CHANGE_CART_QUANTITY": {
-      console.log(action.payload)
+      console.log(action.payload);
       return {
         ...state,
-        cart:state.cart.filter(c=>c.id===action.payload.id?c.qty = action.payload.qty : c.qty)
+        cart: state.cart.filter((c) =>
+          c.id === action.payload.id ? (c.qty = action.payload.qty) : c.qty
+        ),
       };
     }
     default:
@@ -22,4 +24,27 @@ const cartReducer = (state, action) => {
   }
 };
 
-export { cartReducer };
+const filterReducer = (state, action) => {
+  switch (action.type) {
+    case "SORT_BY_PRICE":
+      return { ...state, sort: action.payload };
+    case "FILTER_BY_STOCK":
+      return { ...state, byStock: !state.byStock };
+    case "FILTER_BY_DELIVERY":
+      return { ...state, byFastDelivery: !state.byFastDelivery };
+    case "FILTER_BY_RATING":
+      return { ...state, byRating: action.payload };
+    case "FILTER_BY_SEARCH":
+      return { ...state, searchQuery: action.payload };
+    case "CLEAR_FILTERS":
+      return {
+        byStock: false,
+        byFastDelivery: false,
+        byRating: 0,
+        searchQuery: "",
+      };
+    default:
+      return state;
+  }
+};
+export { cartReducer, filterReducer };
