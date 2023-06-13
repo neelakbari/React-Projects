@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Rating from "./Rating";
 
 const Cart = () => {
+  
   const {
     state: { cart },
     dispatch,
