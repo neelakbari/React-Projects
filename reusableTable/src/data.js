@@ -3,7 +3,7 @@ export const heading1 = [
   { label: "name", name: "Name", sort: false,hasInput:true, },
   { label: "country", name: "Country", sort: true,hasInput:true, },
   { label: "skills", name: "Skills", sort: true,hasInput:true, },
-  { label: "profiency", name: "Profiency", sort: true },
+  { label: "profiency", name: "Profiency", sort: true ,isEditable:true },
 ];
 export const heading2 = [
   { label: "id", name: "ID", sort: true },
@@ -15,8 +15,7 @@ export const heading2 = [
   { label: "price", name: "Price", sort: true },
   { label: "total", name: "Total", sort: true },
 ];
-
-export const data1 = [
+  export const data1 = [
   {
     id: 1,
     name: "Elberta Facher",

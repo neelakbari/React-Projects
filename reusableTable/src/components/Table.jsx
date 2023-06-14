@@ -1,10 +1,53 @@
 import React, { useEffect, useState } from "react";
+import { data1 } from "../data";
 
 const Table = ({ headers, data }) => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
   const [inputValue, setinputValue] = useState({});
   const [filteredData, setfilteredData] = useState(data);
-
+  const [editValue, setEditValue] = useState(null);
+  const handleEdit=(value,target,event,label)=>{
+    
+    // console.log(filteredData.id)
+    console.log(target)
+    let td = event.target
+    td.innerHTML = ""
+    let input = document.createElement('input')
+    input.setAttribute("type","text")
+    input.setAttribute("value",value)
+    input.onchange = (e)=>{e.preventDefault();setEditValue(e.target.value)}
+    td.append(input)
+    input.onkeyup =(e)=>{
+      console.log(e)
+      if (e.key === "Enter") {
+        
+        backTONormal(target,label)
+      }
+    }
+    
+    // filteredData.target
+  }
+  function backTONormal (target,label){
+    debugger
+    console.log(filteredData)
+    // filteredData = filteredData.filter((item)=>{
+    //   // console.log(target,label)
+    //   return {...item,
+    //     label:item["id"]===target ? editValue :item[label] 
+    //   }
+    // })
+    console.log(filteredData)
+    // console.log(td)
+// td.innerHTML = editValue
+  }
+  function handleEditvalue(e){
+    console.log(e)
+  }
+  useEffect(() => {
+    // Apply sorting when filteredData changes
+    applySort();
+    applyFilter();
+  }, [sortConfig, inputValue]);
 
   const handleSort = (key, has) => {
     let direction = "asc";
@@ -34,41 +77,32 @@ const Table = ({ headers, data }) => {
         return 0;
       });
       setfilteredData(sortedData);
-      console.log(filteredData)
+      console.log(filteredData);
     }
   };
-  useEffect(() => {
-    // Apply sorting when filteredData changes
-    // debugger
-    console.log(filteredData)
-    applySort();
-    applyFilter();
-  }, [sortConfig,inputValue]);
 
-  const handleValueChange = (name, inputValue) => {
+  const handleValueChange = (label, value) => {
     setinputValue((prev) => {
       return {
         ...prev,
-        [name]: inputValue,
+        [label]: value,
       };
     });
-    applySort();
-    applyFilter();
   };
   const applyFilter = () => {
     let filteredData = data;
-    Object.entries(inputValue).forEach(([name, inputValue]) => {
-      if (inputValue) {
-        filteredData = filteredData.filter(item =>
-          item[name].toLowerCase().includes(inputValue.trim().toLowerCase())
+    Object.entries(inputValue).forEach(([label, value]) => {
+      if (value) {
+        filteredData = filteredData.filter((item) =>
+          item[label].toLowerCase().includes(value.trim().toLowerCase())
         );
         setfilteredData(filteredData);
-        console.log(filteredData,"DS")
       }
     });
   };
-  return (
-    <div>
+ 
+ 
+  return (      
       <table>
         <thead>
           <tr>
@@ -82,7 +116,7 @@ const Table = ({ headers, data }) => {
             ))}
           </tr>
           <tr>
-            {headers.map(({label,hasInput,}, index) => (
+            {headers.map(({ label, hasInput }, index) => (
               <th key={index}>
                 {hasInput && (
                   <input
@@ -98,20 +132,33 @@ const Table = ({ headers, data }) => {
           </tr>
         </thead>
         <tbody>
-          {console.log(filteredData.map((item)=>item.id))}
           {filteredData.map((item, index) => (
             <tr key={index}>
               {/* {Object.values(item).map((inputValue, index) => (
                 <td key={index}>{inputValue}</td>
               ))} */}
-              {headers.map((column) => {
-                return <td key={column.label}>{item[column.label]}</td>;
-              })}
+              {headers.map((column) =>
+                column.isEditable ? (
+                  <td
+                    key={column.label}
+                    // contentEditable="true" onInput={(e)=>handleEdit(item[column.label], item.id,e)}
+                    onClick={(e) =>{
+                      setEditValue(item[column.label]);
+                      handleEdit(item[column.label], item.id,e,column.label)
+                    }
+                    }
+                  >
+                    {item[column.label]}
+                  </td>
+                ) : (
+                  <td key={column.label}>{item[column.label]}</td>
+                )
+              )}
+              
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
   );
 };
 
