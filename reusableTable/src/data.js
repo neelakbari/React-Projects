@@ -1,8 +1,8 @@
 export const heading1 = [
   { label: "id", name: "ID", sort: true },
-  { label: "name", name: "Name", sort: false,hasInput:true, },
-  { label: "country", name: "Country", sort: true,hasInput:true, },
-  { label: "skills", name: "Skills", sort: true,hasInput:true, },
+  { label: "name", name: "Name", sort: false,hasInput:true,isCustomizable:true, },
+  { label: "country", name: "Country", sort: false,hasInput:true, },
+  { label: "skills", name: "Skills", sort: false,hasInput:true, },
   { label: "profiency", name: "Profiency", sort: true ,isEditable:true },
 ];
 export const heading2 = [
