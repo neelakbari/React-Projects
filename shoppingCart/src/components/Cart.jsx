@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Rating from "./Rating";
 
 const Cart = () => {
-  
+  console.log(CartState())
   const {
     state: { cart },
     dispatch,

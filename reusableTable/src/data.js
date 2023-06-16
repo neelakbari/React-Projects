@@ -1,14 +1,14 @@
 export const heading1 = [
   { label: "id", name: "ID", sort: true },
-  { label: "name", name: "Name", sort: false,hasInput:true, },
-  { label: "country", name: "Country", sort: true,hasInput:true, },
-  { label: "skills", name: "Skills", sort: true,hasInput:true, },
+  { label: "name", name: "Name", sort: false,hasInput:true,isCustomizable:true, },
+  { label: "country", name: "Country", sort: false,hasInput:true, },
+  { label: "skills", name: "Skills", sort: false,hasInput:true, },
   { label: "profiency", name: "Profiency", sort: true ,isEditable:true },
 ];
 export const heading2 = [
   { label: "id", name: "ID", sort: true },
-  { label: "first_name", name: "First Name", sort: false ,hasInput:true,},
-  { label: "last_name", name: "Last Name", sort: false,hasInput:true, },
+  { label: "first_name", name: "First Name", sort: false ,hasInput:true,isCustomizable:true},
+  { label: "last_name", name: "Last Name", sort: false,hasInput:true,isCustomizable:true },
   { label: "email", name: "Email", sort: false,hasInput:true, },
   { label: "product_name", name: "Product Name", sort: false,hasInput:true, },
   { label: "quantity", name: "Quantity", sort: true },
