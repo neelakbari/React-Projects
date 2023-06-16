@@ -1,93 +1,40 @@
 import React, { useReducer, useState } from "react";
+import { tablereducer } from "../Reducers/tableReducer";
 
 const Table = ({ headers, data }) => {
-  const [sortConfig, setSortConfig] = useState({
-    key: null,
-    direction: "asc",
-  });
-  const tablereducer = (state, action) => {
-    switch (action.type) {
-      case "SET_CURRENT_ROW": {
-        return {
-          ...state,
-          currentRow: action.payload,
-          selectedItem: null,
-        };
-      }
-      case"SET_SELECTED_TYPE":{
-        console.log(state)
-        console.log(action.payload)
-        return {
-          ...state,
-          selectedItem:action.payload
-        }
-      }
-      case "SET_INPUT_VALUE": {
-        console.log(state);
-        return {
-          ...state,
-          inputValues: {
-            ...state.inputValues,
-            [action.payload.label]: action.payload.value,
-          },
-        };
-      }
-      case "SORT": {
-        if (action.payload.sort) {
-          if (
-            action.payload.label === sortConfig.key &&
-            sortConfig.direction === "asc"
-          ) {
-            action.payload.direction = "desc";
-          }
-          setSortConfig({
-            key: action.payload.label,
-            direction: action.payload.direction,
-          });
-          let sorted = state.data;
-          sorted = sorted.sort((a, b) =>
-            action.payload.direction === "asc"
-              ? a[action.payload.label] - b[action.payload.label]
-              : b[action.payload.label] - a[action.payload.label]
-          );
-          return { ...state, data: sorted };
-        }
-      }
-      case "SEARCH": {
-        let filteredData = data;
-        Object.entries(state.inputValues).forEach((arr) => {
-          filteredData = filteredData.filter((item) => {
-            return item[arr[0]]
-              .toLowerCase()
-              .includes(arr[1].trim().toLowerCase());
-          });
-        });
-        return { ...state, data: filteredData };
-      }
-      default:
-        return state;
-    }
-  };
   const [state, dispatch] = useReducer(tablereducer, {
     headers,
     data,
+    currentRow: {
+      
+    },
+    selectedItem: "",
+    sortConfig: {
+      key: null,
+      direction: "asc",
+    },
+    filteredData: data,
   });
-  
-  function handleCustomizableClick(rowId) {
-    setCurrentRow(rowId);
-    setSelectedItemType(null);
+
+  function handleCustomizableClick(rowId,label) {
+    console.log(label)
+    const selectedItem = state.currentRow[rowId] || null;
+    if (selectedItem === null) {
+      dispatch({ type: "SET_CURRENT_ROW", payload: {label, rowId, itemType: "" } });
+    }
   }
-  function handleItemTypeSelect(optionValue) {
-    setSelectedItemType(optionValue);
+  function handleItemTypeSelect(rowId, itemType) {
+    dispatch({ type: "SET_CURRENT_ROW", payload: { rowId, itemType } });
   }
 
-  const renderAdditionalItem = () => {
-    if (state.currentRow === null || state.selectedItem === null) {
+  const renderAdditionalItem = (rowId) => {
+    const { currentRow } = state;
+    const item = currentRow[rowId];
+    if (!item) {
       return null;
     }
-
     let additionalItem = null;
-    switch (state.selectedItem) {
+    switch (item) {
       case "image":
         additionalItem = (
           <img
@@ -114,22 +61,32 @@ const Table = ({ headers, data }) => {
     <table>
       <thead>
         <tr>
-          {headers.map(({ name, label, sort }, index) => (
-            <th
-              key={index}
-              onClick={() => {
-                dispatch({
-                  type: "SORT",
-                  payload: { label, sort, direction: "asc" },
-                });
-              }}
-            >
-              {name}
-              {sortConfig.key === label && (
-                <span>{sortConfig.direction === "asc" ? " ▲" : " ▼"}</span>
-              )}
-            </th>
-          ))}
+          {headers.map(({ name, label, sort }, index) => {
+            if (sort) {
+              return (
+                <th
+                  key={index}
+                  onClick={() => {
+                    dispatch({
+                      type: "SORT",
+                      payload: { label, sort, direction: "asc" },
+                    });
+                  }}
+                >
+                  {name}
+                  {state.sortConfig.key === label && (
+                    <span>
+                      {state.sortConfig.direction === "asc" ? " ▲" : " ▼"}
+                    </span>
+                  )}
+                </th>
+              );
+            } else {
+              return <th key={index}>
+                {name}
+              </th>
+            }
+          })}
         </tr>
         <tr>
           {headers.map(({ label, hasInput }, index) => (
@@ -156,25 +113,25 @@ const Table = ({ headers, data }) => {
         </tr>
       </thead>
       <tbody>
-        {state.data.map((row, index) => (
+        {state.filteredData.map((row, index) => (
           <tr key={index}>
             {headers.map((column) =>
               column.isCustomizable ? (
                 <td
                   key={column.label}
-                  onClick={(e) => {
-                    dispatch({ type: "SET_CURRENT_ROW", payload: row.id });
-                  }}
+                  onClick={(e) => handleCustomizableClick(row.id,column.label)}
                 >
-                  {row[column.label]}
-                  {state.currentRow === row.id && (
+                  <span>{row[column.label]}</span>
+                  {/* {console.log(row.id)} */}
+                  {console.log(state.currentRow[column.label])}
+                  {!state.currentRow[column.label] && (
                     <div>
-                      {state.selectedItem ? (
-                        renderAdditionalItem()
-                      ) : (
+                      {state.currentRow[column.label] == column.label && (
                         <select
-                          value={state?.selectedItem || ""}
-                          onChange={(e) => dispatch({type:"SET_SELECTED_TYPE",payload:e.target.value})}
+                          value={state.selectedItem || ""}
+                          onChange={(e) =>
+                            handleItemTypeSelect(row.id, e.target.value)
+                          }
                         >
                           <option value="">Select item type</option>
                           <option value="image">Image</option>
@@ -182,6 +139,12 @@ const Table = ({ headers, data }) => {
                           <option value="other">Other</option>
                         </select>
                       )}
+                    </div>
+                  )}
+                  {state.currentRow[row.id] && (
+                    <div className="extra_item">
+                      {state.currentRow[Number(row.id)] &&
+                        renderAdditionalItem(row.id)}
                     </div>
                   )}
                 </td>
@@ -198,45 +161,45 @@ const Table = ({ headers, data }) => {
 
 export default Table;
 // const [editValue, setEditValue] = useState(null);
-  //   const handleEdit=(value,target,event,label)=>{
+//   const handleEdit=(value,target,event,label)=>{
 
-  //     // console.log(filteredData.id)
-  //     console.log(target)
-  //     let td = event.target
-  //     td.innerHTML = ""
-  //     let input = document.createElement('input')
-  //     input.setAttribute("type","text")
-  //     input.setAttribute("value",value)
-  //     input.onchange = (e)=>{e.preventDefault();setEditValue(e.target.value)}
-  //     td.append(input)
-  //     input.onkeyup =(e)=>{
-  //       console.log(e)
-  //       if (e.key === "Enter") {
+//     // console.log(filteredData.id)
+//     console.log(target)
+//     let td = event.target
+//     td.innerHTML = ""
+//     let input = document.createElement('input')
+//     input.setAttribute("type","text")
+//     input.setAttribute("value",value)
+//     input.onchange = (e)=>{e.preventDefault();setEditValue(e.target.value)}
+//     td.append(input)
+//     input.onkeyup =(e)=>{
+//       console.log(e)
+//       if (e.key === "Enter") {
 
-  //         backTONormal(target,label)
-  //       }
-  //     }
+//         backTONormal(target,label)
+//       }
+//     }
 
-  //     // filteredData.target
-  //   }
-  //   function backTONormal (target,label){
-  //     debugger
-  //     console.log(filteredData)
-  //     // filteredData = filteredData.filter((item)=>{
-  //     //   // console.log(target,label)
-  //     //   return {...item,
-  //     //     label:item["id"]===target ? editValue :item[label]
-  //     //   }
-  //     // })
-  //     console.log(filteredData)
-  //     // console.log(td)
-  // // td.innerHTML = editValue
-  //   }
-  // useEffect(() => {
-  //   // Apply sorting when filteredData changes
-  //   applySort();
-  //   applyFilter();
-  // }, [sortConfig, inputValue]);
-  // function handleValueChange(label, value) {
-  //   dispatch({type:"SET_INPUT_VALUE",payload:{label,value}})
-  // }
+//     // filteredData.target
+//   }
+//   function backTONormal (target,label){
+//     debugger
+//     console.log(filteredData)
+//     // filteredData = filteredData.filter((item)=>{
+//     //   // console.log(target,label)
+//     //   return {...item,
+//     //     label:item["id"]===target ? editValue :item[label]
+//     //   }
+//     // })
+//     console.log(filteredData)
+//     // console.log(td)
+// // td.innerHTML = editValue
+//   }
+// useEffect(() => {
+//   // Apply sorting when filteredData changes
+//   applySort();
+//   applyFilter();
+// }, [sortConfig, inputValue]);
+// function handleValueChange(label, value) {
+//   dispatch({type:"SET_INPUT_VALUE",payload:{label,value}})
+// }
