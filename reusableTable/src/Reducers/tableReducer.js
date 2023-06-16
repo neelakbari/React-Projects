@@ -1,9 +1,6 @@
-import { useState } from "react";
-
 export const tablereducer = (state, action) => {
   switch (action.type) {
     case "SET_CURRENT_ROW": {
-      console.log(state);
       return {
         ...state,
         currentRow: {

@@ -5,9 +5,7 @@ const Table = ({ headers, data }) => {
   const [state, dispatch] = useReducer(tablereducer, {
     headers,
     data,
-    currentRow: {
-      
-    },
+    currentRow: {},
     selectedItem: "",
     sortConfig: {
       key: null,
@@ -16,20 +14,22 @@ const Table = ({ headers, data }) => {
     filteredData: data,
   });
 
-  function handleCustomizableClick(rowId,label) {
-    console.log(label)
+  function handleCustomizableClick(rowId, label) {
     const selectedItem = state.currentRow[rowId] || null;
     if (selectedItem === null) {
-      dispatch({ type: "SET_CURRENT_ROW", payload: {label, rowId, itemType: "" } });
+      dispatch({
+        type: "SET_CURRENT_ROW",
+        payload: { label, rowId, itemType: "" },
+      });
     }
   }
-  function handleItemTypeSelect(rowId, itemType) {
-    dispatch({ type: "SET_CURRENT_ROW", payload: { rowId, itemType } });
+  function handleItemTypeSelect(label,rowId, itemType) {
+    dispatch({ type: "SET_CURRENT_ROW", payload: { label ,rowId, itemType } });
   }
 
-  const renderAdditionalItem = (rowId) => {
+  const renderAdditionalItem = (label,rowId) => {
     const { currentRow } = state;
-    const item = currentRow[rowId];
+    const item = currentRow[label][rowId];
     if (!item) {
       return null;
     }
@@ -82,9 +82,7 @@ const Table = ({ headers, data }) => {
                 </th>
               );
             } else {
-              return <th key={index}>
-                {name}
-              </th>
+              return <th key={index}>{name}</th>;
             }
           })}
         </tr>
@@ -119,32 +117,32 @@ const Table = ({ headers, data }) => {
               column.isCustomizable ? (
                 <td
                   key={column.label}
-                  onClick={(e) => handleCustomizableClick(row.id,column.label)}
+                  onClick={(e) => handleCustomizableClick(row.id, column.label)}
                 >
                   <span>{row[column.label]}</span>
-                  {/* {console.log(row.id)} */}
-                  {console.log(state.currentRow[column.label])}
-                  {!state.currentRow[column.label] && (
+
+                  {state.currentRow?.[column.label] && (
                     <div>
-                      {state.currentRow[column.label] == column.label && (
-                        <select
-                          value={state.selectedItem || ""}
-                          onChange={(e) =>
-                            handleItemTypeSelect(row.id, e.target.value)
-                          }
-                        >
-                          <option value="">Select item type</option>
-                          <option value="image">Image</option>
-                          <option value="icon">Icon</option>
-                          <option value="other">Other</option>
-                        </select>
+                      {state.currentRow?.[column.label]?.[row.id] == "" && (
+                        <>
+                          <select
+                            value={state.selectedItem || ""}
+                            onChange={(e) =>
+                              handleItemTypeSelect(column.label,row.id, e.target.value)
+                            }
+                          >
+                            <option value="">Select item type</option>
+                            <option value="image">Image</option>
+                            <option value="icon">Icon</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </>
                       )}
                     </div>
                   )}
-                  {state.currentRow[row.id] && (
+                  {state.currentRow?.[column.label]?.[row.id] && (
                     <div className="extra_item">
-                      {state.currentRow[Number(row.id)] &&
-                        renderAdditionalItem(row.id)}
+                        {renderAdditionalItem(column.label,row.id)}
                     </div>
                   )}
                 </td>
