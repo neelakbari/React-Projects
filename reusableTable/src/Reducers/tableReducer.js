@@ -12,17 +12,11 @@ export const tablereducer = (state, action) => {
         },
       };
     }
-    case "SET_SELECTED_TYPE": {
-      return {
-        ...state,
-        selectedItem: action.payload,
-      };
-    }
     case "SET_INPUT_VALUE": {
       return {
         ...state,
-        inputValues: {
-          ...state.inputValues,
+        searchValues: {
+          ...state.searchValues,
           [action.payload.label]: action.payload.value,
         },
       };
@@ -53,7 +47,7 @@ export const tablereducer = (state, action) => {
     }
     case "SEARCH": {
       let filteredData = state.data;
-      Object.entries(state.inputValues).forEach((arr) => {
+      Object.entries(state.searchValues).forEach((arr) => {
         filteredData = filteredData.filter((item) => {
           return item[arr[0]]
             .toLowerCase()
