@@ -5,13 +5,13 @@ const Table = ({ headers, data }) => {
   const [state, dispatch] = useReducer(tablereducer, {
     headers,
     data,
+    filteredData: data,
+    searchValues:{},
     currentRow: {},
-    selectedItem: "",
     sortConfig: {
       key: null,
       direction: "asc",
     },
-    filteredData: data,
   });
 
   function handleCustomizableClick(rowId, label) {
@@ -94,7 +94,7 @@ const Table = ({ headers, data }) => {
                   type="text"
                   placeholder={`search ${label}`}
                   id={label}
-                  value={state.inputValues?.[label] || " "}
+                  value={state.searchValues?.[label] || " "}
                   onChange={(e) => {
                     dispatch({
                       type: "SET_INPUT_VALUE",
