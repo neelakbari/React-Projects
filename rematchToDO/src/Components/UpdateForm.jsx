@@ -4,8 +4,13 @@ const UpdateForm = ({ updateData, setUpdateData }) => {
   const dispatch = useDispatch();
   const updateTodo = (payload) => dispatch.todos.update(payload);
   const handleUpdate = () => {
-    updateTodo(updateData);
-    setUpdateData("");
+    if (updateData.title.trim().length < 15) {
+      updateTodo(updateData);
+      setUpdateData("");
+    }else{
+      alert("Title Cannot be greater Than 15 characters")
+      setUpdateData("")
+    }
   };
   const changeTask = (e) => {
     setUpdateData({
