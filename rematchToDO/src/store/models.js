@@ -1,40 +1,31 @@
 export const todos = {
-  state: { list: [] },
+  state: [],
   reducers: {
-    add: (state, payload) => ({ ...state, list: [...state.list, payload] }),
-    remove: (state, payload) => ({
-      ...state,
-      list: state.list.filter((item) => item.id !== payload.id),
-    }),
-    check: (state, payload) => ({
-      ...state,
-      list: [
-        ...state.list.map((data) =>
-          data.id == payload.id ? { ...data, ischecked: !data.ischecked } : data
-        ),
-      ],
-    }),
-    update: (state, payload) => ({
-      ...state,
-      list: [...state.list.filter((item) => item.id !== payload.id), payload],
-    }),
-    toggleDescription:(state,payload)=>{
-      return {
-        ...state,
-        list:[
-          ...state.list.map((data)=>data.id === payload.id ?{...data,isDescriptionOpen:!data.isDescriptionOpen}:data)
-        ]
-      }
+    add: (state, payload) => [...state, payload],
+    remove: (state, payload) => {
+      return state.filter((item) => item.id !== payload.id);
     },
-    updateDescription:(state,payload)=>{
-      console.log(state,payload)
-
-      return {
-        ...state,
-        list:[
-          ...state.list.map((data)=>data.id ===payload.id ?{...data,description:payload.description}:data)
-        ]
-      }
-    }
+    check: (state, payload) => {
+      return state.map((data) =>
+        data.id == payload.id ? { ...data, ischecked: !data.ischecked } : data
+      );
+    },
+    update: (state, payload) => {
+      return [...state.filter((item) => item.id !== payload.id), payload];
+    },
+    toggleDescription: (state, payload) => {
+      return state.map((data) =>
+        data.id === payload.id
+          ? { ...data, isDescriptionOpen: !data.isDescriptionOpen }
+          : data
+      );
+    },
+    updateDescription: (state, payload) => {
+      return state.map((data) =>
+        data.id === payload.id
+          ? { ...data, description: payload.description }
+          : data
+      );
+    },
   },
 };

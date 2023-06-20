@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import UpdateForm from "./Components/UpdateForm";
 
 function App() {
-  const todo = useSelector((state) => state.todos.list);
+  const todo = useSelector((state) => state.todos);
 
   const [newTask, setNewTask] = useState("");
   const [updateData, setUpdateData] = useState("");
