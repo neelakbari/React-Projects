@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleCheck,
   faPen,
   faTrashCan,
+  faSortDown,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 
-const ToDo = ({ todo, setUpdateData }) => {
+const ToDo = ({ todo, setUpdateData, }) => {
+  const descriptions = {};
   const dispatch = useDispatch();
   const deleteToDo = (payload) => dispatch.todos.remove(payload);
   const checkToDo = (payload) => dispatch.todos.check(payload);
+  const toggleDescription = (payload) =>
+    dispatch.todos.toggleDescription(payload);
+  const handleDescriptionChange = (id, value) => {
+    descriptions[id] = value;
+  };
+  const updateDescription = (task) => {
+    const descriptionValue = descriptions[task.id];
+    if (descriptionValue) {
+      dispatch.todos.updateDescription({
+        id: task.id,
+        description: descriptionValue,
+      });
+    }
+    toggleDescription(task)
+  };
 
   return (
     <div>
@@ -54,6 +71,31 @@ const ToDo = ({ todo, setUpdateData }) => {
                         onClick={() => deleteToDo(task)}
                       />
                     </span>
+                    <span title="Add Description">
+                      <FontAwesomeIcon
+                        icon={faSortDown}
+                        onClick={() => toggleDescription(task)}
+                      />
+                    </span>
+                  </div>
+                  <div className="description_container">
+                    {task.isDescriptionOpen && (
+                      <>
+                        <input
+                          type="text"
+                          placeholder="Enter description"
+                          required
+                          defaultValue={task.description }
+                          onChange={(e) =>
+                            handleDescriptionChange(task.id, e.target.value)
+                          }
+                        />
+                        <button onClick={() => updateDescription(task)}>
+                          Add description
+                        </button>
+                      </>
+                    )}
+                    {!task.isDescriptionOpen && task.description && <p>{task.description}</p>}
                   </div>
                 </div>
               </React.Fragment>

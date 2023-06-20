@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="number" id="num" placeholder="put a number" />
+    <label for="unit">select first parameter</label>
+    <select name="unit" id="unit1">
+      <option value="kilometer">kilometer</option>
+      <option value="meter">meter</option>
+      <option value="centimeter">centimeter</option>
+      <option value="milimeter">milimeter</option>
+    </select>
+    <label for="unit">select second parameter</label>
+    <select name="unit" id="unit2">
+      <option value="kilometer">kilometer</option>
+      <option value="meter">meter</option>
+      <option value="centimeter">centimeter</option>
+      <option value="milimeter">milimeter</option>
+    </select>
+    <button value="submit" id="button">submit</button>
+    <div id="print"></div>
+  </body>
+  <script>
+    document.getElementById("button").addEventListener("click", () => {
+      let num = document.getElementById("num").value;
+      let firstunit = document.getElementById("unit1").value;
+      let secondunit = document.getElementById("unit2").value;
+      const myDiv = document.getElementById("print");
+      if (firstunit == "kilometer" && secondunit == "meter") {
+        myDiv.innerHTML = `${num}km is equal to  ${num * 1000}m`;
+      } else if (firstunit == "meter" && secondunit == "milimeter") {
+        console.log("Called");
+        myDiv.innerHTML = `${num}m is equal to  ${num * 1000}mm`;
+      } else if (firstunit == "meter" && secondunit == "centimeter") {
+        myDiv.innerHTML = `${num}m is equal to  ${num * 100}cm`;
+      } else {
+        myDiv.innerHTML = `${num}cm is equal to  ${num * 10}mm`;
+      }
+    });
+  </script>
+</html>

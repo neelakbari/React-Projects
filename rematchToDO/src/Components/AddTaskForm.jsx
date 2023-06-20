@@ -6,8 +6,13 @@ const AddTaskForm = ({ newTask, setNewTask }) => {
   const addToDo = (payload) => dispatch.todos.add(payload);
 
   const handleAddTask = () => {
-    addToDo({ id: Date.now(), title: newTask, ischecked: false });
-    setNewTask("");
+    if (newTask.trim().length < 15) {
+      addToDo({ id: Date.now(), title: newTask, ischecked: false ,isDescriptionOpen:false,description:""});
+      setNewTask("");
+    }else{
+      alert("Title Cannot be greater Than 15 characters")
+      setNewTask("")
+    }
   };
   return (
     <>
