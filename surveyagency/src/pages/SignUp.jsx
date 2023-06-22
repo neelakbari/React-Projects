@@ -1,7 +1,9 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import "../scss/SignUp.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -20,17 +22,27 @@ const SignUp = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    // navigate("/login");
     dataBase.push(user);
     localStorage.setItem("dataBase", JSON.stringify(dataBase));
+    if (true) {
+      toast.success("Sign Up Successfull !", {
+        position: toast.POSITION.TOP_CENTER,
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: { width: "500px" },
+        closeButton: false,
+      });
+    }
     setUser({
       id: uuidv4(),
       name: "",
       email: "",
       password: "",
     });
+    setTimeout(() => {
+      navigate("/login");
+    }, 2000);
   };
-
   return (
     <>
       <div className="signup_wrapper">
@@ -74,6 +86,7 @@ const SignUp = () => {
             </span>
           </div>
           <button type="submit">Sign In</button>
+          <ToastContainer />
         </form>
       </div>
     </>
