@@ -1,4 +1,5 @@
 export const todos = {
+  name:"todos",
   state: [],
   reducers: {
     add: (state, payload) => [...state, payload],
