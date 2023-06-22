@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import "../scss/SignUp.scss";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-  
-    const handleEmailChange = (event) => {
-      setEmail(event.target.value);
+    const navigate = useNavigate();
+    const dataBase = JSON.parse(localStorage.getItem("dataBase"))
+    const [currentuser, setCurrentUser] = useState({
+        email: "",
+        password: "",
+      });
+ 
+    const handleChange = (event,field) => {
+      setCurrentUser({
+        ...currentuser,
+        [field]:event.target.value,
+      })
     };
-  
-    const handlePasswordChange = (event) => {
-      setPassword(event.target.value);
-    };
-  
+    const validateUser = ()=>{
+        const isUser = dataBase.find((user)=>user.email === currentuser.email)
+      isUser ? isUser?.password === currentuser.password ? navigate("/workspace") : alert("invalid username or password") : confirm("User not registered Wanna register?") ? navigate("/signup") : navigate("/")
+    }
     const handleSubmit = (event) => {
       event.preventDefault();
-      console.log('Login submitted:', email, password);
-      setEmail('');
-      setPassword('');
+      validateUser();
     };
   return (
     <>
@@ -29,8 +34,8 @@ const Login = () => {
             <input
               type="email"
               id="email"
-              value={email}
-              onChange={handleEmailChange}
+              value={currentuser.email}
+              onChange={(e)=>handleChange(e,"email")}
               required
             />
           </div>
@@ -39,8 +44,8 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              value={password}
-              onChange={handlePasswordChange}
+              value={currentuser.password}
+              onChange={(e)=>handleChange(e,"password")}
               required
             />
           </div>
