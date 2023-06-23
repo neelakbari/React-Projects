@@ -1,7 +1,9 @@
+import { survey_img } from "../assets"
+
 export const initialData = {
     surveyName: "My Survey",
     currentPage: 1,
-    image: "/images/bg-img.jpg",
+    image: survey_img,
     page: [
         {
             id: 1,
