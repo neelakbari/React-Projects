@@ -6,10 +6,10 @@ const Login = () => {
     const navigate = useNavigate();
     const dataBase = JSON.parse(localStorage.getItem("dataBase"))
     const [currentuser, setCurrentUser] = useState({
-        email: "",
-        password: "",
+      email: "",
+      password: "",
       });
- 
+      
     const handleChange = (event,field) => {
       setCurrentUser({
         ...currentuser,
@@ -17,8 +17,8 @@ const Login = () => {
       })
     };
     const validateUser = ()=>{
-        const isUser = dataBase.find((user)=>user.email === currentuser.email)
-      isUser ? isUser?.password === currentuser.password ? navigate("/workspace") : alert("invalid username or password") : confirm("User not registered Wanna register?") ? navigate("/signup") : navigate("/")
+      const isUser = dataBase.find((user)=>user.email === currentuser.email)
+      isUser ? isUser?.password === currentuser.password ? (navigate("/workspace")(localStorage.setItem("currentUser",JSON.stringify(isUser)))) : alert("invalid username or password") : confirm("User not registered Wanna register?") ? navigate("/signup") : navigate("/")
     }
     const handleSubmit = (event) => {
       event.preventDefault();
