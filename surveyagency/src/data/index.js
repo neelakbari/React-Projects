@@ -102,4 +102,5 @@ export const pageLayout = {
     required: true,
     image: "",
     layout: 1,
+    option:[],
 }

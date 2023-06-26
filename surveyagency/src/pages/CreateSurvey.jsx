@@ -43,8 +43,6 @@ const CreateSurvey = (props) => {
         break;
       }
       case "changeInput": {
-        console.log(data);
-        console.log(value);
         if (name == "") {
           data["surveyName"] = value;
           break;
@@ -52,6 +50,7 @@ const CreateSurvey = (props) => {
         else {
             let update = data.page.map((dat) => ({
               ...dat,
+              option:name=="option"&& data.currentPage === dat.id ? value :dat.option,
               question: name=="question"&& data.currentPage === dat.id ? value : dat.question,
               description: name=="description"&& data.currentPage === dat.id ? value : dat.description,
             }));

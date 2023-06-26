@@ -5,7 +5,6 @@ import "../../scss/View.scss";
 const View = ({ survey, dropDown, handleChange, image }) => {
   const ComponentToRender = Components[dropDown.component];
   let disabled = false;
-  console.log(dropDown.component);
   if (
     dropDown.component === "Textbox" ||
     dropDown.component === "Textarea" ||
