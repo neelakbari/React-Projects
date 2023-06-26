@@ -96,6 +96,7 @@ export const LayoutData = [
 export const pageLayout = {
     id: 1,
     dropDownId: 1,
+    description:"",
     question: "...",
     answer: "",
     required: true,
