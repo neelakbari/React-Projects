@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Question from "./Question";
 import "../../scss/View.scss";
 
@@ -10,42 +10,45 @@ const Layout = ({
   type,
   handleChange,
 }) => {
-  const [option, setoption] = useState([...survey.option]);
-  console.log(option);
+  const [option, setoption] = useState([]);
+  useEffect(() => {
+    setoption(survey.option);
+  }, [survey.option]);
   const handleChoice = (type, value, id) => {
+    let temp = option?.length > 0 ? [...option] : [];
     switch (type) {
-      case "add":
-        {
-          const newOption = {
-            id: +option.length + 1,
-            value: "",
+      case "add": {
+        temp.push({
+          id: +option.length + 1,
+          value: "",
+        });
+        break;
+      }
+      case "input": {
+        temp = temp.map((data) => {
+          return {
+            ...data,
+            value: data.id === id ? value : data.value,
           };
-          setoption([...option, newOption]);
-          break;
-        }
-        case "input":{
-          let updatedOption = option.map((data)=>{
+        });
+        break;
+      }
+      case "delete": {
+        temp = temp
+          .filter((data) => data.id !== id)
+          .map((data, index) => {
             return {
               ...data,
-              value:data.id === id?value:data.value
-            }
-          })
-          setoption(updatedOption)
-          break
-        }
-        case "delete":{
-          let updatedOption = option.filter((data)=>data.id!==id).map((data,index)=>{
-            return {
-              ...data,
-              id:+index+1
-            }
-          })
-          setoption(updatedOption)
-          break;
-        }
+              id: +index + 1,
+            };
+          });
+        break;
+      }
       default:
         break;
     }
+    setoption(temp);
+    handleChange(temp, "changeInput", "option");
   };
   return (
     <div className="layout_one">
