@@ -3,32 +3,33 @@ import { Input, Select, Switch, Upload, Button, Popover } from "antd";
 import { EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import "../scss/View.scss";
 import { left_align } from "../assets";
+import { DropDownData, LayoutData } from "../data";
 
 const { Option } = Select;
 
 const ChangesBar = ({
   currentIndex,
   dropDown,
-  DropDownData,
   survey,
   surveyId,
-  LayoutData,
+  handleChange,
 }) => {
   return (
     <div className="selection_bar">
-      <div className="selection_bar_name">
+      <div className="bar_name">
         <Input
           type="text"
           value={survey.surveyName}
+          onChange={(e)=>handleChange(e.target.value,"changeInput")}
           placeholder="survey name"
           prefix={<img src={left_align} alt="" />}
         />
       </div>
-      <div className="selection_bar_type">
+      <div className="bar_type">
         <span>Type</span>
         <Select
           onChange={(e) => handleChange(e, "dropDownId")}
-          value={dropDown}
+          value={dropDown.type}
         >
           {DropDownData.map((type) => (
             <Option key={type.id}>
@@ -38,21 +39,20 @@ const ChangesBar = ({
           ))}
         </Select>
       </div>
-      <div className="selection_bar_settings">
-        <span>Settings</span>
-        <div className="selection_bar_settings_req">
+      <div className="bar_setting">
+        <div className="required">
           <span>Required</span>
           <div>
             <Switch
-             
+             onChange={(e) => handleChange(e,"required")}
               checked={survey.page[currentIndex].required}
             />
           </div>
         </div>
       </div>
-      <div className="selection_bar_change">
+      <div className="change">
         <span>Change Image</span>
-        <div className="selection_bar_change_upload">
+        <div className="change_upload">
           <Upload
             showUploadList={false}
           >
@@ -60,9 +60,9 @@ const ChangesBar = ({
           </Upload>
         </div>
       </div>
-      <div className="selection_bar_layout">
+      <div className="layout">
         <span>Layout</span>
-        <div className="selection_bar_layout_wrapper">
+        <div className="layout_wrapper">
           {LayoutData.map((data) => {
             return (
               <div key={data.id}
@@ -70,7 +70,7 @@ const ChangesBar = ({
                 id={`${
                   survey.page[currentIndex].layout === data.id ? "selected" : ""
                 }`}
-                className="selection_bar_layout_wrapper_box"
+                className="layout_wrapper_box"
               >
                 {data.id}
               </div>
@@ -78,9 +78,9 @@ const ChangesBar = ({
           })}
         </div>
       </div>
-      <div className="selection_bar_action">
+      <div className="action">
         <button
-          className="selection_bar_action_preview"
+          className="action_preview"
         >
           <EyeOutlined />
         </button>
