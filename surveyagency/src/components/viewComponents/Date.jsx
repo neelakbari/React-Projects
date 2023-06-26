@@ -1,6 +1,7 @@
 import React from 'react'
 
-const Date = () => {
+const Date = (props) => {
+  console.log(props)
   return (
     <div>Date</div>
   )

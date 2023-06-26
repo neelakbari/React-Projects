@@ -17,6 +17,7 @@
   display: flex;
   padding: 50px;
   overflow: hidden;
+  overflow-y:scroll ;
 
   & .image_wrapper {
     margin-right: 40px;
@@ -186,4 +187,104 @@
       margin-right: 10px;
     }
   }
+}
+
+.question {
+  display: flex;
+  width: 100%;
+  &__left {
+    width: 15%;
+    height: fit-content;
+    color: rgb(4, 69, 175);
+    font-weight: 500;
+    display: flex;
+    font-size: 22px;
+    align-items: center;
+    svg {
+      margin-left: 10px;
+      height: 30px;
+      width: 30px;
+    }
+  }
+  &__right {
+    &__textInput {
+      .ant-input {
+        border: none;
+        outline: none;
+        font-size: 24px;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+.multiple_choice {
+  &_wrapper {
+    &__active {
+      background: #0445af4d !important;
+    }
+    &__active > .multiple-choice__wrapper__choice__num {
+      background: #0445af;
+      color: #fff;
+    }
+  }
+  & .choice {
+    display: flex;
+    background: #e5ecf7;
+    width: max-content;
+    color: #0445af;
+    border: 1px solid #0445af;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 10px 0;
+    &:hover > .choice_number {
+      background: #0445af;
+      color: #fff;
+    }
+    &:hover {
+      background: #0445af4d;
+    }
+    &_icon {
+      cursor: pointer;
+    }
+    &_number {
+      cursor: pointer;
+      background-color: #fff;
+      padding: 3px 12px;
+      font-weight: bold;
+      border-radius: 4px;
+      font-size: 20px;
+      border: 1px solid #0445af;
+    }
+    &_icon {
+      padding: 10px;
+      height: 20px;
+      width: 34px;
+      svg {
+        height: 20px;
+        width: 20px;
+      }
+    }
+    .ant-input {
+      cursor: pointer;
+      width: auto;
+      background: transparent;
+      border: none;
+      color: #0445af;
+      font-size: 20px;
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}
+.multiplechoice_add {
+  width: fit-content;
+  cursor: pointer;
+  margin-top: 20px;
+  text-decoration: underline;
+  color: #0445af;
+  font-size: 22px;
 }
