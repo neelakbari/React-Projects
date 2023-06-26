@@ -45,8 +45,19 @@ const CreateSurvey = (props) => {
       case "changeInput": {
         console.log(data);
         console.log(value);
-        data["surveyName"] = value;
-        break;
+        if (name == "") {
+          data["surveyName"] = value;
+          break;
+        }
+        else {
+            let update = data.page.map((dat) => ({
+              ...dat,
+              question: name=="question"&& data.currentPage === dat.id ? value : dat.question,
+              description: name=="description"&& data.currentPage === dat.id ? value : dat.description,
+            }));
+            data.page = update;
+            break;
+        }
       }
       case "deletePage": {
         let index = data.page.findIndex((data) => data.id === +value);
@@ -98,7 +109,7 @@ const CreateSurvey = (props) => {
           </div>
           <div className="survey_view">
             <View
-              // handleChange={handleChange}
+              handleChange={handleChange}
               survey={survey.page[currentIndex]}
               dropDown={dropDown}
               image={survey.image}

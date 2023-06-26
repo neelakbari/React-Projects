@@ -9,7 +9,7 @@ export const initialData = {
             id: 1,
             option: [{id: 1, value: ""}],
             dropDownId: 1,
-            question: "...",
+            question: "",
             answer: "",
             required: true,
             description: "",
