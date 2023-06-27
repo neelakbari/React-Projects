@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Question from "./Question";
 import "../../scss/View.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { changeInput } from "../../redux/reducers/surverDataSlice";
 
 const Layout = ({
-  survey,
   image,
   ComponentToRender,
   disabled,
   type,
-  handleChange,
 }) => {
+  const surveyPages = useSelector((state) => state.surveyData.page);
+  const dispatch = useDispatch();
+  const currentIndex = useSelector((state) =>
+  surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
+);
   const [option, setoption] = useState([]);
   useEffect(() => {
-    setoption(survey.option);
-  }, [survey.option]);
+    setoption(surveyPages[currentIndex].option);
+  }, [surveyPages[currentIndex].option]);
+  console.log(surveyPages[currentIndex])
   const handleChoice = (type, value, id) => {
     let temp = option?.length > 0 ? [...option] : [];
     switch (type) {
@@ -48,7 +54,7 @@ const Layout = ({
         break;
     }
     setoption(temp);
-    handleChange(temp, "changeInput", "option");
+    dispatch(changeInput({type:"option",value:temp}))
   };
   return (
     <div className="layout_one">
@@ -57,11 +63,11 @@ const Layout = ({
       </div>
       <div className="input_wrapper">
         <div className="Question">
-          <Question survey={survey} handleChange={handleChange} />
+          <Question />
         </div>
         <div className="answer">
           <ComponentToRender
-            survey={survey}
+            survey={surveyPages}
             disabled={disabled}
             type={type}
             handleChoice={handleChoice}

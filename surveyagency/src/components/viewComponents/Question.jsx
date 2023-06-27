@@ -1,33 +1,38 @@
 import React from "react";
-import { Input } from 'antd';
-import { ForwardOutlined } from '@ant-design/icons';
+import { Input } from "antd";
+import { ForwardOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { changeInput } from "../../redux/reducers/surverDataSlice";
 
-const Question = ({ handleChange, survey }) => {
-  // console.log(handleChange, survey);
+const Question = () => {
+  const surveyPages = useSelector((state) => state.surveyData.page);
+  const currentIndex = useSelector((state) =>
+    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
+  );
+  const dispatch = useDispatch();
   return (
     <div className="question">
       <div className="question__left">
-        <span>{survey.id}</span>
+        <span>{surveyPages[currentIndex].id}</span>
         <ForwardOutlined />
       </div>
       <div className="question__right">
         <div className="question__right__textInput">
           <Input
             onChange={(e) =>
-              handleChange(e.target.value, "changeInput","question")
+              dispatch(changeInput({type:"question",value:e.target.value}))
             }
-            onBlur={(e)=>handleChange(e.target.value,"changeInput","question")}
             type="text"
-            value={survey?.question}
+            value={surveyPages[currentIndex]?.question}
             placeholder="Question"
           />
           <Input
             onChange={(e) =>
-              handleChange(e.target.value, "changeInput", "description")
+              dispatch(changeInput({type:"description",value:e.target.value}))
             }
             type="text"
             placeholder="Description (optional)"
-            value={survey?.description}
+            value={surveyPages[currentIndex]?.description}
           />
         </div>
       </div>
