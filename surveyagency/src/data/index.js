@@ -34,43 +34,43 @@ export const DropDownData = [
         icon: "DashOutlined"
     },
     {
-        id: 5,
+        id: 3,
         type: "Date",
         component:"Date",
         icon: "CalendarOutlined"
     },
     {
-        id: 6,
+        id: 4,
         type: "Feedback",
         component:"Feedback",
         icon: "StarOutlined"
     },
     {
-        id: 7,
+        id: 5,
         type: "Textarea",
         component:"Textarea",
         icon: "AlignCenterOutlined"
     },
     {
-        id: 8,
+        id: 6,
         type: "Number",
         component:"Textbox",
         icon: "FieldNumberOutlined"
     },
     {
-        id: 9,
+        id: 7,
         type: "Email",
         component:"Textbox",
         icon: "MailOutlined"
     },
     {
-        id: 10,
+        id: 8,
         type: "Website",
         component:"Textbox",
         icon: "LinkOutlined"
     },
     {
-        id: 11,
+        id: 9,
         type: "Phone",
         component:"Textbox",
         icon: "PhoneOutlined"
