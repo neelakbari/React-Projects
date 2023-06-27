@@ -5,7 +5,7 @@ import "../scss/View.scss";
 import { left_align } from "../assets";
 import { DropDownData, LayoutData } from "../data";
 import { useDispatch, useSelector } from "react-redux";
-import { changeName, dropDownId, required } from "../redux/reducers/surverDataSlice";
+import { changeName, dropDownId, layoutChange, required } from "../redux/reducers/surverDataSlice";
 
 const { Option } = Select;
 
@@ -68,7 +68,7 @@ const ChangesBar = ({
           {LayoutData.map((data) => {
             return (
               <div key={data.id}
-                onClick={() => dispatch(layoutChange(data.id))}
+                onClick={() => dispatch(layoutChange({index:currentIndex,id:data.id}))}
                 id={`${
                   surveyData.page[currentIndex].layout === data.id ? "selected" : ""
                 }`}

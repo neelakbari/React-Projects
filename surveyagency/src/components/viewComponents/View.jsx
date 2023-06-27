@@ -15,7 +15,6 @@ const View = ({  dropDown, image }) => {
   return (
     <div className="view">
       <Layout
-        image={image}
         type={dropDown.type}
         ComponentToRender={ComponentToRender}
         disabled={disabled}

@@ -18,6 +18,9 @@
   padding: 50px;
   overflow: hidden;
   overflow-y:scroll ;
+  &.layout_two {
+    flex-direction: row-reverse;
+}
 
   & .image_wrapper {
     margin-right: 40px;
@@ -25,6 +28,12 @@
     background-size: cover;
     height: 100%;
     width: 300px;
+    &_layout_three {
+      height: 100%;
+      min-height: 500px;
+      width: 400px;
+      margin: -50px 40px -50px -50px;
+  }
     & img {
       height: 100%;
       width: 100%;

@@ -6,7 +6,6 @@ import ContentBar from "../components/ContentBar";
 import View from "../components/viewComponents/View";
 import { DropDownData, pageLayout } from "../data";
 import ChangesBar from "../components/ChangesBar";
-import CustomIcon from "../components/CustomIcon";
 
 const CreateSurvey = () => {
   const { createId } = useParams();
@@ -35,7 +34,6 @@ const CreateSurvey = () => {
           <div className="survey_view">
             <View
               dropDown={dropDown}
-              image={survey.image}
             />
           </div>
           <div className="survey_selection">
@@ -43,7 +41,6 @@ const CreateSurvey = () => {
               // handlePreview={handlePreview}
               currentIndex={currentIndex}
               dropDown={dropDown}
-              // CustomIcon={CustomIcon}
               // handlePublish={handlePublish}
               // linkPopup={linkPopup}
               // setLinkPopup={setLinkPopup}
