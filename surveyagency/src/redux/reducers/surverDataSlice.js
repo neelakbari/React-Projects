@@ -8,20 +8,14 @@ const surveyDataSlice = createSlice({
   initialState,
   reducers: {
     changeName: (state, action) => {
-      return {
-        ...state,
-        surveyName: action.payload,
-      };
+      state.surveyName = action.payload;
     },
     addPage: (state, action) => {
       let newPage = { ...pageLayout };
       newPage["id"] = state.page.length + 1;
       newPage["dropDownId"] = +action.payload;
-      return {
-        ...state,
-        currentPage: state.page.length + 1,
-        page: [...state.page, newPage],
-      };
+      state.currentPage = state.page.length + 1;
+      state.page = [...state.page, newPage];
     },
     deletePage: (state, action) => {
       let index = state.page.findIndex((state) => state.id === +action.payload);
@@ -44,52 +38,77 @@ const surveyDataSlice = createSlice({
       }
     },
     changeCurrent: (state, action) => {
-      return {
-        ...state,
-        currentPage: +action.payload,
-      };
+      state.currentPage = +action.payload;
     },
     dropDownId: (state, action) => {
-      return {
-        ...state,
-        page: state.page.map((page) => ({
-          ...page,
-          dropDownId:
-            page.id == state.currentPage ? +action.payload : page.dropDownId,
-        })),
-      };
+      state.page = state.page.map((page) => ({
+        ...page,
+        dropDownId:
+          page.id == state.currentPage ? +action.payload : page.dropDownId,
+      }));
     },
     required: (state, action) => {
+      state.page = state.page.map((page) => ({
+        ...page,
+        required: page.id == state.currentPage ? action.payload : page.required,
+      }));
+    },
+    changeInput: (state, action) => {
+      let update = state.page.map((data) => ({
+        ...data,
+        question:
+          action.payload.type == "question" && state.currentPage === data.id
+            ? action.payload.value
+            : data.question,
+        description:
+          action.payload.type == "description" && state.currentPage === data.id
+            ? action.payload.value
+            : data.description,
+      }));
       return {
         ...state,
-        page: state.page.map((page) => ({
-          ...page,
-          required:
-            page.id == state.currentPage ? action.payload : page.required,
-        })),
+        page: update,
       };
     },
-    changeInput:(state,action)=>{
-        let update = state.page.map((data) => ({
-            ...data,
-            option:
-              action.payload.type == "option" && state.currentPage === data.id
-                ? action.payload.value
-                : data.option,
-            question:
-              action.payload.type == "question" && state.currentPage === data.id
-                ? action.payload.value
-                : data.question,
-            description:
-              action.payload.type == "description" && state.currentPage === data.id
-                ? action.payload.value
-                : data.description,
-          }));
-        return {
-            ...state,
-            page:update,
-        }
+    addOption: (state, action) => {
+      const currentPage = state.page[action.payload.index];
+      if (currentPage) {
+        currentPage.option.push({
+          id: currentPage.option.length + 1,
+          value: "",
+        });
+      }
     },
+    updateOption: (state, action) => {
+      const currentPage = state.page[action.payload.index];
+      if (currentPage) {
+        currentPage.option = currentPage.option.map((data) => ({
+          ...data,
+          value:
+            data.id === action.payload.id ? action.payload.value : data.value,
+        }));
+      }
+    },
+    deleteOption: (state, action) => {
+      const currentPage = state.page[action.payload.index];
+      if (currentPage) {
+        currentPage.option = currentPage.option
+          .filter((data) => data.id !== action.payload.id)
+          .map((data, index) => ({ ...data, id: index + 1 }));
+      }
+    },
+    layoutChange: (state, action) => {
+      const currentPage = state.page[action.payload.index];
+      if (currentPage) {
+        currentPage.layout = action.payload.id;
+      }
+    },
+    fileUpload: (state, action) => {
+      state.page[state.currentPage - 1].image = action.payload;
+    },
+    openModal:(state)=>{
+      state.isModalOpen = !state.isModalOpen
+    }
   },
 });
 
@@ -101,5 +120,11 @@ export const {
   dropDownId,
   required,
   changeInput,
+  addOption,
+  updateOption,
+  deleteOption,
+  layoutChange,
+  fileUpload,
+  openModal,
 } = surveyDataSlice.actions;
 export default surveyDataSlice.reducer;

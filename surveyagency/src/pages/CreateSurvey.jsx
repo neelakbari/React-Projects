@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import "../scss/CreateSurvey.scss";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ContentBar from "../components/ContentBar";
 import View from "../components/viewComponents/View";
 import { DropDownData, pageLayout } from "../data";
 import ChangesBar from "../components/ChangesBar";
-import CustomIcon from "../components/CustomIcon";
+import { Modal } from 'antd';
+import PreviewPage from "../components/PreviewPage";
+import { openModal } from "../redux/reducers/surverDataSlice";
 
 const CreateSurvey = () => {
   const { createId } = useParams();
+  const dispatch = useDispatch();
   const surveys = useSelector((state) => state.survey);
   const survey = useSelector((state) => state.surveyData);
   const surveyId = surveys.filter((survey) => survey.surveyId === createId)[0]
@@ -35,7 +38,6 @@ const CreateSurvey = () => {
           <div className="survey_view">
             <View
               dropDown={dropDown}
-              image={survey.image}
             />
           </div>
           <div className="survey_selection">
@@ -43,13 +45,16 @@ const CreateSurvey = () => {
               // handlePreview={handlePreview}
               currentIndex={currentIndex}
               dropDown={dropDown}
-              // CustomIcon={CustomIcon}
               // handlePublish={handlePublish}
               // linkPopup={linkPopup}
               // setLinkPopup={setLinkPopup}
             />
           </div>
         </div>
+
+        <Modal className="preview-modal" footer={null} open={survey.isModalOpen} closable={false} onCancel={()=>dispatch(openModal())} >
+           <PreviewPage/>
+        </Modal>  
       </div>
     </>
   );

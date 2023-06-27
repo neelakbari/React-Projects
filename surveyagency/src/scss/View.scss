@@ -17,7 +17,10 @@
   display: flex;
   padding: 50px;
   overflow: hidden;
-  overflow-y:scroll ;
+  overflow-y: scroll;
+  &.layout_two {
+    flex-direction: row-reverse;
+  }
 
   & .image_wrapper {
     margin-right: 40px;
@@ -25,6 +28,12 @@
     background-size: cover;
     height: 100%;
     width: 300px;
+    &_layout_three {
+      height: 100%;
+      min-height: 500px;
+      width: 400px;
+      margin: -50px 40px -50px -50px;
+    }
     & img {
       height: 100%;
       width: 100%;
@@ -107,11 +116,16 @@
     &_upload {
       cursor: pointer;
       border-radius: 4px;
-      .ant-upload {
-        span {
-          button {
-            background: #e3e3e3;
-          }
+      input {
+        display: none;
+      }
+      label {
+        background: #e3e3e3;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 4px;
+        &:hover{
+          outline: 1px solid #0d6efd;
         }
       }
     }
@@ -287,4 +301,27 @@
   text-decoration: underline;
   color: #0445af;
   font-size: 22px;
+}
+
+.Feedback {
+  &__wrapper {
+    display: flex;
+    &__active {
+      border-radius: 50%;
+      border: 5px solid #0445af;
+    }
+    &__img {
+      cursor: pointer;
+      margin: 0 5px;
+      &:hover {
+        border-radius: 50%;
+        border: 5px solid #0445af;
+      }
+      img {
+        cursor: pointer;
+        height: 50px;
+        width: 50px;
+      }
+    }
+  }
 }
