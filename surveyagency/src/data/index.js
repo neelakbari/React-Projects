@@ -4,6 +4,7 @@ export const initialData = {
     surveyName: "My Survey",
     currentPage: 1,
     image: survey_img,
+    isModalOpen:false,
     page: [
         {
             id: 1,
@@ -97,10 +98,41 @@ export const pageLayout = {
     id: 1,
     dropDownId: 1,
     description:"",
-    question: "...",
+    question: "",
     answer: "",
     required: true,
     image: "",
     layout: 1,
     option:[],
+}
+
+
+export const getPlaceholder = (dropDownType) => {
+    let placeholder = "";
+    switch (dropDownType) {
+        case "Phone": {
+            placeholder= "9090909090"  
+            break;
+        }
+        case "Email": {
+            placeholder= "survey@gmail.com" 
+            break;
+        }
+        case "Website": {
+            placeholder= "https://" 
+            break;
+        }
+        case "Number": {
+            placeholder= "Enter a number here..."
+            break;
+        }
+        case "Textbox": {
+            placeholder= "Type your answer here..." 
+            break;
+        }
+        default: {
+            break;
+        }
+    } 
+    return placeholder;
 }

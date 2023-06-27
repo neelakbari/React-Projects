@@ -38,21 +38,20 @@ const surveyDataSlice = createSlice({
       }
     },
     changeCurrent: (state, action) => {
-        state.currentPage= +action.payload;
+      state.currentPage = +action.payload;
     },
     dropDownId: (state, action) => {
-        state.page= state.page.map((page) => ({
-          ...page,
-          dropDownId:
-            page.id == state.currentPage ? +action.payload : page.dropDownId,
-        }))
+      state.page = state.page.map((page) => ({
+        ...page,
+        dropDownId:
+          page.id == state.currentPage ? +action.payload : page.dropDownId,
+      }));
     },
     required: (state, action) => {
-        state.page= state.page.map((page) => ({
-          ...page,
-          required:
-            page.id == state.currentPage ? action.payload : page.required,
-        }))
+      state.page = state.page.map((page) => ({
+        ...page,
+        required: page.id == state.currentPage ? action.payload : page.required,
+      }));
     },
     changeInput: (state, action) => {
       let update = state.page.map((data) => ({
@@ -92,7 +91,6 @@ const surveyDataSlice = createSlice({
     },
     deleteOption: (state, action) => {
       const currentPage = state.page[action.payload.index];
-      console.log(action.payload);
       if (currentPage) {
         currentPage.option = currentPage.option
           .filter((data) => data.id !== action.payload.id)
@@ -105,6 +103,12 @@ const surveyDataSlice = createSlice({
         currentPage.layout = action.payload.id;
       }
     },
+    fileUpload: (state, action) => {
+      state.page[state.currentPage - 1].image = action.payload;
+    },
+    openModal:(state)=>{
+      state.isModalOpen = !state.isModalOpen
+    }
   },
 });
 
@@ -120,5 +124,7 @@ export const {
   updateOption,
   deleteOption,
   layoutChange,
+  fileUpload,
+  openModal,
 } = surveyDataSlice.actions;
 export default surveyDataSlice.reducer;

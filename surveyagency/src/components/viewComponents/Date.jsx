@@ -1,10 +1,19 @@
-import React from 'react'
+import React from "react";
+import moment from 'moment';
+import { DatePicker } from 'antd';
 
-const Date = (props) => {
-  console.log(props)
+const Date = ({disabled}) => {
+  const answer =false;
   return (
-    <div>Date</div>
-  )
-}
+    <div className="date">
+      <DatePicker
+        // onFocus={() => setError("")}
+        disabled={disabled}
+        onChange={(e) => handleAnswer(e.format("DD-MM-YYYY"))}
+        value={answer ? moment(answer, "DD-MM-YYYY") : moment()}
+      />
+    </div>
+  );
+};
 
-export default Date
+export default Date;

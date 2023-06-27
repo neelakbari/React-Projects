@@ -5,39 +5,54 @@ import "../scss/View.scss";
 import { left_align } from "../assets";
 import { DropDownData, LayoutData } from "../data";
 import { useDispatch, useSelector } from "react-redux";
-import { changeName, dropDownId, layoutChange, required } from "../redux/reducers/surverDataSlice";
+import {
+  changeName,
+  dropDownId,
+  fileUpload,
+  layoutChange,
+  openModal,
+  required,
+} from "../redux/reducers/surverDataSlice";
 
 const { Option } = Select;
 
-const ChangesBar = ({
-  currentIndex,
-  dropDown,
-}) => {
-  const surveyData = useSelector((state)=>state.surveyData)
+const ChangesBar = ({ currentIndex, dropDown }) => {
+  const surveyData = useSelector((state) => state.surveyData);
   const dispatch = useDispatch();
-  
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const imageSrc = reader.result;
+      dispatch(fileUpload(imageSrc));
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
   return (
     <div className="selection_bar">
       <div className="bar_name">
         <Input
           type="text"
           value={surveyData.surveyName}
-          onChange={(e)=>dispatch(changeName(e.target.value))}
+          onChange={(e) => dispatch(changeName(e.target.value))}
           placeholder="survey name"
           prefix={<img src={left_align} alt="" />}
         />
       </div>
       <div className="bar_type">
         <span>Type</span>
-        <Select
-          onChange={(e) => dispatch(dropDownId(e))}
-          value={dropDown.type}
-        >
+        <Select onChange={(e) => dispatch(dropDownId(e))} value={dropDown.type}>
           {DropDownData.map((type) => (
-            <Option key={type.id}>
-              
-              {type.type}
-            </Option>
+            <Option key={type.id}>{type.type}</Option>
           ))}
         </Select>
       </div>
@@ -46,7 +61,7 @@ const ChangesBar = ({
           <span>Required</span>
           <div>
             <Switch
-             onChange={(e) => dispatch(required(e))}
+              onChange={(e) => dispatch(required(e))}
               checked={surveyData.page[currentIndex].required}
             />
           </div>
@@ -55,11 +70,15 @@ const ChangesBar = ({
       <div className="change">
         <span>Change Image</span>
         <div className="change_upload">
-          <Upload
-            showUploadList={false}
-          >
-            <Button icon={<UploadOutlined />} />
-          </Upload>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileUpload}
+            id="file-upload"
+          />
+          <label htmlFor="file-upload" className="custom-upload-button">
+            <UploadOutlined />
+          </label>
         </div>
       </div>
       <div className="layout">
@@ -67,10 +86,15 @@ const ChangesBar = ({
         <div className="layout_wrapper">
           {LayoutData.map((data) => {
             return (
-              <div key={data.id}
-                onClick={() => dispatch(layoutChange({index:currentIndex,id:data.id}))}
+              <div
+                key={data.id}
+                onClick={() =>
+                  dispatch(layoutChange({ index: currentIndex, id: data.id }))
+                }
                 id={`${
-                  surveyData.page[currentIndex].layout === data.id ? "selected" : ""
+                  surveyData.page[currentIndex].layout === data.id
+                    ? "selected"
+                    : ""
                 }`}
                 className="layout_wrapper_box"
               >
@@ -83,6 +107,7 @@ const ChangesBar = ({
       <div className="action">
         <button
           className="action_preview"
+          onClick={() => dispatch(openModal())}
         >
           <EyeOutlined />
         </button>
