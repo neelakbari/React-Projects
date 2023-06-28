@@ -11,10 +11,10 @@ import PreviewPage from "../components/PreviewPage";
 import { openModal } from "../redux/reducers/surverDataSlice";
 
 const CreateSurvey = () => {
-  // const { createId } = useParams();
+  const { createId } = useParams();
   const dispatch = useDispatch();
   // const surveys = useSelector((state) => state.survey);
-  const survey = useSelector((state) => state.surveyData);
+  const survey = useSelector((state) => state.survey[1].data.find((survey)=>survey.surveyId === createId)).surveyData;
   // const surveyId = surveys.filter((survey) => survey.surveyId === createId)[0]
   //   .surveyId;
   // const currentPage = surveys.filter((survey) => survey.surveyId === createId)[0]

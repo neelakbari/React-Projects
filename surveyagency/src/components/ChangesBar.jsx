@@ -16,8 +16,13 @@ import {
 
 const { Option } = Select;
 
-const ChangesBar = ({ currentIndex, dropDown }) => {
+const ChangesBar = ({  dropDown }) => {
+  const surveyPages = useSelector((state) => state.surveyData.page);
+
   const surveyData = useSelector((state) => state.surveyData);
+  const currentIndex = useSelector((state) =>
+    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
+  );
   const dispatch = useDispatch();
 
   const handleFormSubmit = (event) => {
