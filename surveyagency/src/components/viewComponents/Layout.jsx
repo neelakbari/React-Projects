@@ -3,7 +3,7 @@ import Question from "./Question";
 import "../../scss/View.scss";
 import { useDispatch, useSelector } from "react-redux";
 
-const Layout = ({ ComponentToRender, disabled, type }) => {
+const Layout = ({ ComponentToRender, disabled }) => {
   const surveyPages = useSelector((state) => state.surveyData.page);
   const surveyData = useSelector((state) => state.surveyData);
   const currentIndex = useSelector((state) =>
@@ -37,10 +37,7 @@ const Layout = ({ ComponentToRender, disabled, type }) => {
         </div>
         <div className="answer">
           <ComponentToRender
-            survey={surveyPages}
             disabled={disabled}
-            type={type}
-            option={option}
           />
         </div>
       </div>

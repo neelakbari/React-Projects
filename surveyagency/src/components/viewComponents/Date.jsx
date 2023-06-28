@@ -7,10 +7,8 @@ const Date = ({disabled}) => {
   return (
     <div className="date">
       <DatePicker
-        // onFocus={() => setError("")}
         disabled={disabled}
-        onChange={(e) => handleAnswer(e.format("DD-MM-YYYY"))}
-        value={answer ? moment(answer, "DD-MM-YYYY") : moment()}
+        value={ moment()}
       />
     </div>
   );

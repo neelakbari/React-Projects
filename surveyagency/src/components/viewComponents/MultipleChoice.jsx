@@ -52,7 +52,7 @@ const MulitipleChoice = ({
                 />
               )}
               {preview  && (
-                <CheckOutlined className="multiple-choice__wrapper__choice__icon" />
+                <CheckOutlined className="choice_icon" />
               )}
             </div>
           );
