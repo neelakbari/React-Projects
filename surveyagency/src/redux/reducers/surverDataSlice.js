@@ -13,7 +13,7 @@ const surveyDataSlice = createSlice({
     addPage: (state, action) => {
       let newPage = { ...pageLayout };
       newPage["id"] = state.page.length + 1;
-      newPage["dropDownId"] = +action.payload;
+      newPage["dropDownId"] = +action.payload.value;
       state.currentPage = state.page.length + 1;
       state.page = [...state.page, newPage];
     },
@@ -21,7 +21,6 @@ const surveyDataSlice = createSlice({
       let index = state.page.findIndex((state) => state.id === +action.payload);
       if (state.page.length > 1 && index !== 0) {
         state["currentPage"] = state.page[index - 1].id;
-
         state.page.splice(index, 1);
 
         if (index > -1) {

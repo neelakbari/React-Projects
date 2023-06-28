@@ -1,13 +1,16 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import surveySlice from "../reducers/surveySlice";
 import surveyDataSlice from "../reducers/surverDataSlice";
+import localStorageMiddleware from "./loaclStorageMiddleware";
 
 const rootReducer = combineReducers({
     survey:surveySlice,
     surveyData:surveyDataSlice,
 })
+const middleware = [...getDefaultMiddleware(), localStorageMiddleware];
 const store = configureStore({
-    reducer:rootReducer
+    reducer:rootReducer,
+    middleware,
 })
 
 export default store

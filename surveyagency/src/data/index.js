@@ -1,6 +1,7 @@
 import { survey_img } from "../assets"
 
 export const initialData = {
+    surveyId:"",
     surveyName: "My Survey",
     currentPage: 1,
     image: survey_img,
