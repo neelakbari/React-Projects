@@ -20,7 +20,7 @@ const WorkspaceLayout = () => {
             <div className="right_loggedIn_user">
               <div className="right__loggedIn_user_profile"></div>
               <div className="right_loggedIn_user_name">
-                QA artoon
+                Neel Akbari
               </div>
             </div>
             <Link className="logout_btn" to={"/"}>Logout</Link>

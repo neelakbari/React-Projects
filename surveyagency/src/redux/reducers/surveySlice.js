@@ -1,33 +1,35 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = JSON.parse(localStorage.getItem("surveyDatabase")) || [];
+const initialState = JSON.parse(localStorage.getItem("dataBase")) || [];
 
 const surveySlice = createSlice({
   name: "surveySlice",
   initialState,
   reducers: {
     addSurvey: (state, action) => {
-      const UpdatedSurveyDatabase = [...state, action.payload];
-      localStorage.setItem(
-        "surveyDatabase",
-        JSON.stringify(UpdatedSurveyDatabase)
+      console.log(action.payload);
+      const currentIndex = state.findIndex(
+        (user) =>
+          user.email === JSON.parse(localStorage.getItem("currentUser")).email
       );
-
-      return [...state, action.payload];
+      state[currentIndex].data = [...state[currentIndex].data, action.payload];
+      localStorage.setItem("dataBase", JSON.stringify(state));
     },
     deleteSurvey: (state, action) => {
-      const UpdatedSurveyDatabase = [
-        ...state.filter((survey) => survey.surveyId !== action.payload),
-      ];
-      localStorage.setItem(
-        "surveyDatabase",
-        JSON.stringify(UpdatedSurveyDatabase)
+      const currentIndex = state.findIndex(
+        (user) =>
+          user.email === JSON.parse(localStorage.getItem("currentUser")).email
       );
-      return [...state.filter((survey) => survey.surveyId !== action.payload)];
+      state[currentIndex].data = [
+        ...state[currentIndex].data.filter(
+          (survey) => survey.surveyId !== action.payload
+        ),
+      ];
+      localStorage.setItem("dataBase", JSON.stringify(state));
     },
   },
 });
 
-export const { addSurvey, addToLocalStorage, deleteSurvey } =
+export const { addSurvey, deleteSurvey } =
   surveySlice.actions;
 export default surveySlice.reducer;

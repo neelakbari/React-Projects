@@ -13,6 +13,7 @@ const SignUp = () => {
     name: "",
     email: "",
     password: "",
+    data:[],
   });
   const handleChange = (event, field) => {
     setUser({

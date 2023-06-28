@@ -11,12 +11,12 @@ import PreviewPage from "../components/PreviewPage";
 import { openModal } from "../redux/reducers/surverDataSlice";
 
 const CreateSurvey = () => {
-  const { createId } = useParams();
+  // const { createId } = useParams();
   const dispatch = useDispatch();
-  const surveys = useSelector((state) => state.survey);
+  // const surveys = useSelector((state) => state.survey);
   const survey = useSelector((state) => state.surveyData);
-  const surveyId = surveys.filter((survey) => survey.surveyId === createId)[0]
-    .surveyId;
+  // const surveyId = surveys.filter((survey) => survey.surveyId === createId)[0]
+  //   .surveyId;
   // const currentPage = surveys.filter((survey) => survey.surveyId === createId)[0]
   // .currentPage;
   // const survey = surveys.filter((survey) => survey.surveyId === createId)[0]
@@ -42,12 +42,8 @@ const CreateSurvey = () => {
           </div>
           <div className="survey_selection">
             <ChangesBar
-              // handlePreview={handlePreview}
               currentIndex={currentIndex}
               dropDown={dropDown}
-              // handlePublish={handlePublish}
-              // linkPopup={linkPopup}
-              // setLinkPopup={setLinkPopup}
             />
           </div>
         </div>

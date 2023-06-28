@@ -1,158 +1,175 @@
-.ant-modal{
-    
-    height: 80vh !important;
-    width: 80vw !important;
+.ant-modal {
+  height: 80vh !important;
+  width: 70vw !important;
 }
-.container-layout {
-    margin: -24px;
+.ant-modal-content {
+  width: 100%;
+  height: 100%;
+  .ant-modal-body {
+    width: 100%;
+    height: 100%;
+  }
+}
+.container_layout {
+  margin: -24px;
+  width: 100%;
+  height: 100%;
 }
 .container {
-    #preview-mode {
-        width: 100%;
-        min-height: unset;
-        max-height: unset;
-        max-width: unset;
+  #preview_mode {
+    width: 100%;
+    min-height: unset;
+    max-height: unset;
+    max-width: unset;
+  }
+  &_layout_two {
+    flex-direction: row-reverse;
+  }
+  &_preview {
+    color: rgb(38, 38, 39);
+    border-radius: 8px;
+    animation: 1s cubic-bezier(0.22, 1, 0.36, 1) 0s 1 normal none running expand;
+    height: 100%;
+    width: 100%;
+    min-height: 600px;
+    max-height: 500px;
+    position: relative;
+    overflow: hidden;
+    background-color: transparent;
+    display: flex;
+    padding: 25px;
+    overflow: hidden;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      display: none;
     }
-    &__layout-two {
-        flex-direction: row-reverse;
-    }
-    &__preview {
-        color: rgb(38, 38, 39);
-        border-radius: 8px;
-        animation: 1s cubic-bezier(0.22, 1, 0.36, 1) 0s 1 normal none running expand;
+
+    & .image_wrapper {
+      margin-right: 10px;
+      object-fit: contain;
+      background-size: cover;
+      max-width: 40%;
+      flex: 0 0 40%;
+      img {
         height: 100%;
         width: 100%;
-        min-height: 600px;
-        max-height: 500px;
-        position: relative;
-        overflow: hidden;
-        background-color: transparent;
-        display: flex;
-        padding: 50px 50px;
-        overflow: hidden;
-        overflow-y: scroll;
-        &::-webkit-scrollbar {
-           display: none;
-        }
-        &__left {
-            margin-right: 40px;
-            object-fit: contain;
-            background-size: cover;
-            width: 400px;
-            img { 
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-            }
-        }
-        &__layout-three {
-            width: 500px;
-            margin: -50px 40px -50px -50px;
-        }
-        &__right {
-            overflow: hidden;
-            overflow-y: scroll;
-            &::-webkit-scrollbar {
-                display: none;
-             }
-            &__answer {
-                margin-top: 20px;
-                margin-left: 65px;
-            }
-            &__submit {
-                margin-top: 20px;
-                margin-left: 65px;  
-                button {
-                    font-weight: bold;
-                    font-size: 20px;
-                    padding: 5px 20px;
-                    background: rgb(4, 69, 175);
-                    border: none;
-                    outline: none;
-                    border-radius: 4px;
-                    color: #fff;
-                    cursor: pointer;
-                    &:hover {
-                        background: rgb(42, 97, 187);
-                    }
-                }
-            }
-            &__error {
-                background: #f7e6e6;
-                color: #af0404;
-                padding: 5px 10px;
-                border-radius: 4px;
-                margin-top: 20px;
-                margin-left: 65px;
-                display: flex;
-                align-items: center;
-                width: 70%;
-                .anticon {
-                    margin-right: 10px;
-                    height: 20px;
-                    max-width: 25px;
-                    width: 100%;
-                    svg {
-                        height: 100%;
-                        width: 100%;
-                    }
-                }
-            }
-        }
+        object-fit: cover;
+      }
     }
-    &__submit {
+    &_layout_three {
+      width: 500px;
+      margin: -50px 40px -50px -50px;
+    }
+    &_right {
+      max-width: 40%;
+      flex: 0 0 40%;
+      overflow: hidden;
+      overflow-y: scroll;
+      padding-right: 10px;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      &_answer {
+        margin-top: 20px;
+        margin-left: 65px;
+        & .multiple_choice .choice {
+          width: 100%;
+        }
+      }
+      &_submit {
+        margin-top: 20px;
+        margin-left: 65px;
+        button {
+          font-weight: bold;
+          font-size: 20px;
+          padding: 5px 20px;
+          background: rgb(4, 69, 175);
+          border: none;
+          outline: none;
+          border-radius: 4px;
+          color: #fff;
+          cursor: pointer;
+          &:hover {
+            background: rgb(42, 97, 187);
+          }
+        }
+      }
+      &_error {
+        background: #f7e6e6;
+        color: #af0404;
+        padding: 5px 10px;
+        border-radius: 4px;
+        margin-top: 20px;
+        margin-left: 65px;
         display: flex;
-        justify-content: flex-end;
-        margin-bottom: 10px;
-        flex-direction: column;
-        align-items: flex-end;
-        &__skip {
-            margin-left: 50px;
-            font-weight: normal;
-            font-size: 20px;
-            padding: 4px 10px;
-            background: rgb(4, 69, 175);
-            border: none;
-            outline: none;
-            border-radius: 4px;
+        align-items: center;
+        width: 70%;
+        .anticon {
+          margin-right: 10px;
+          height: 20px;
+          max-width: 25px;
+          width: 100%;
+          svg {
+            height: 100%;
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  &_submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+    &_skip {
+      margin-left: 50px;
+      font-weight: normal;
+      font-size: 20px;
+      padding: 4px 10px;
+      background: rgb(4, 69, 175);
+      border: none;
+      outline: none;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      &:hover {
+        background: rgb(42, 97, 187);
+      }
+    }
+    &_changePage {
+      display: flex;
+      flex-direction: column-reverse;
+      height: fit-content;
+      width: fit-content;
+      .ant-btn {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 20px;
+        padding: 5px 15px;
+        background: rgb(4, 69, 175);
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        margin-right: 10px;
+        color: #fff;
+        cursor: pointer;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        .anticon {
+          svg {
             color: #fff;
-            cursor: pointer;
-            &:hover {
-                background: rgb(42, 97, 187);
-            }
+          }
         }
-        &__changePage {
-            display: flex;
-            flex-direction: column-reverse;
-            height: fit-content;
-            width: fit-content;
-            .ant-btn {
-                margin-top: 10px;
-                font-weight: bold;
-                font-size: 20px;
-                padding: 5px 15px;
-                background: rgb(4, 69, 175);
-                border: none;
-                outline: none;
-                border-radius: 4px;
-                margin-right: 10px;
-                color: #fff;
-                cursor: pointer;
-                height: 100%;
-                width: 100%;
-                cursor: pointer;
-                .anticon {
-                    svg {
-                        color: #fff;
-                    }
-                }
-                &:hover {
-                    background: rgb(42, 97, 187);
-                }
-                &:focus {
-                    background: rgb(42, 97, 187);
-                }
-            }  
+        &:hover {
+          background: rgb(42, 97, 187);
         }
+        &:focus {
+          background: rgb(42, 97, 187);
+        }
+      }
     }
+  }
 }

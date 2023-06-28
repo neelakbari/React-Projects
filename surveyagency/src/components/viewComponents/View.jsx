@@ -2,7 +2,7 @@ import Layout from "./Layout";
 import Components from "../InputComponents";
 import "../../scss/View.scss";
 
-const View = ({  dropDown, image }) => {
+const View = ({  dropDown }) => {
   const ComponentToRender = Components[dropDown.component];
   let disabled = false;
   if (
@@ -15,7 +15,6 @@ const View = ({  dropDown, image }) => {
   return (
     <div className="view">
       <Layout
-        type={dropDown.type}
         ComponentToRender={ComponentToRender}
         disabled={disabled}
       />

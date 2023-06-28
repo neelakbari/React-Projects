@@ -4,11 +4,13 @@ import { ForwardOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { changeInput } from "../../redux/reducers/surverDataSlice";
 
-const Question = () => {
+const Question = ({preview=false,pageIndex}) => {
   const surveyPages = useSelector((state) => state.surveyData.page);
-  const currentIndex = useSelector((state) =>
+  let currentIndex;
+  preview ?(currentIndex = pageIndex ): (currentIndex = useSelector((state) =>
     surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
-  );
+  ))
+  
   const dispatch = useDispatch();
   return (
     <div className="question">

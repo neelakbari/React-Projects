@@ -1,98 +1,87 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "../scss/Preview.scss";
 import { useSelector } from "react-redux";
 import Question from "./viewComponents/Question";
-import { Button, message } from 'antd';
-import { ArrowDownOutlined, ArrowUpOutlined, WarningFilled } from '@ant-design/icons';
+import { Button } from "antd";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+} from "@ant-design/icons";
 import { DropDownData } from "../data";
 import Components from "./InputComponents";
 
 const PreviewPage = () => {
   const { createId } = useParams();
-  console.log(createId);
-  const survey = useSelector((state)=>state.surveyData);
-  const currentIndex = survey?.page.findIndex(
-    (data) => data.id === survey.currentPage
-  );
+  const survey = useSelector((state) => state.surveyData);
+  const [pageIndex, setPageIndex] = useState(0);
   const dropDown = DropDownData.filter((data) => {
-    return data.id === +survey?.page[currentIndex].dropDownId;
+    return data.id === +survey?.page[pageIndex].dropDownId;
   })?.[0];
   const ComponentToRender = Components[dropDown.component];
 
-  const pageIndex = 0
+  const handleChange = (type) => {
+    if (survey.page[pageIndex]?.required) {
+      alert("This answer is required");
+      return false;
+    }
+    type === "prev" && pageIndex !== 0
+      ? setPageIndex(pageIndex - 1)
+      : setPageIndex(pageIndex + 1);
+  };
   return (
     <div
       className={`container ${
-        survey?.page[pageIndex]?.layout === 3 ? "container-layout" : ""
+        survey?.page[pageIndex]?.layout === 3 ? "container_layout" : ""
       }`}
     >
       {survey?.page?.[pageIndex] && (
         <>
           <div
-            id={`${createId ? "preview-mode" : ""}`}
-            className={`container__preview  ${
-              survey.page[pageIndex]?.layout === 2
-                ? "container__layout-two"
-                : ""
+            id={`${createId ? "preview_mode" : ""}`}
+            className={`container_preview  ${
+              survey.page[pageIndex]?.layout === 2 ? "container_layout_two" : ""
             }`}
           >
             <div
-              id={`${createId ? "preview-mode" : ""}`}
-              className={`container__preview__left ${
+              id={`${createId ? "preview_mode" : ""}`}
+              className={`image_wrapper ${
                 survey.page[pageIndex]?.layout === 3
-                  ? "container__preview__layout-three"
+                  ? "container_preview_layout_three"
                   : ""
               }`}
             >
-              <img src={survey.image} alt="" />
+              <img src={survey.page[pageIndex].image || survey.image} alt="" />
             </div>
             <div
-              id={`${createId ? "preview-mode" : ""}`}
-              className="container__preview__right"
+              id={`${createId ? "preview_mode" : ""}`}
+              className="container_preview_right"
             >
               <div className="preview__right__question">
-                <Question survey={survey.page[pageIndex]} />
+                <Question preview={true} pageIndex={pageIndex} />
               </div>
-              <div className="container__preview__right__answer">
-                <ComponentToRender
-                //   setError={setError}
-                //   compData={compData}
-                //   handleAnswer={handleAnswer}
-                //   answer={survey.page[pageIndex]?.answer}
-                //   choice={survey.page[pageIndex]?.option}
-                  preview={true}
-                />
+              <div className="container_preview_right_answer">
+                <ComponentToRender preview={true} />
               </div>
-              <div className="container__preview__right__submit">
-                <button
-                //   onClick={() => {
-                //     handleSubmit();
-                //   }}
-                >
+              <div className="container_preview_right_submit">
+                <button>
                   {survey.page.length === pageIndex + 1 ? "Submit" : "Ok"}
                 </button>
               </div>
-              {/* {error && (
-                <div className="container__preview__right__error">
-                  <WarningFilled />
-                  <span>{error}</span>
-                </div>
-              )} */}
             </div>
-            <div className="container__submit">
+            <div className="container_submit">
               {!survey.page[pageIndex]?.required && (
                 <button
-                //   onClick={() => handleChange("next")}
-                  className="container__submit__skip"
+                  onClick={() => handleChange("next")}
+                  className="container_submit_skip"
                 >
                   Skip
                 </button>
               )}
-              <div className="container__submit__changePage">
+              <div className="container_submit_changePage">
                 <Button
                   disabled={pageIndex === survey.page.length - 1}
-                //   onClick={() => handleChange("next")}
+                  onClick={() => handleChange("next")}
                 >
                   <ArrowDownOutlined />
                 </Button>
