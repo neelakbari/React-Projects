@@ -2,7 +2,7 @@ import React from "react";
 import "../scss/Workspace.scss";
 import { plus } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
-import { addSurvey } from "../redux/reducers/surveySlice";
+import { addSurvey, updateSurvey } from "../redux/reducers/surveySlice";
 import { initialData } from "../data";
 import { v4 as uuidv4 } from "uuid";
 import CreatedForm from "../components/CreatedForm";
@@ -10,21 +10,17 @@ import CreatedForm from "../components/CreatedForm";
 const Workspace = () => {
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   const dispatch = useDispatch();
-  const surveyDb = JSON.parse(localStorage.getItem("surveyDatabase")) || [];
-  const surveys = surveyDb.filter(
-    (survey) => survey.userId === currentUser.email
-  );
   const survey = useSelector((state) => state.survey);
+  let currentUserIndex = survey.findIndex(
+    (user) => user.email === currentUser.email
+  );
+  let data = survey[currentUserIndex].data;
   const addNewSurvey = {
     surveyData: initialData,
     userId: currentUser.email,
     surveyId: uuidv4(),
     response: [],
   };
-  let data = survey.filter(
-    (user) =>
-      user.email === JSON.parse(localStorage.getItem("currentUser")).email
-  )[0].data;
   return (
     <div className="workspace">
       <div className="workspace_wrapper">
@@ -41,7 +37,7 @@ const Workspace = () => {
         </div>
 
         {data?.map((survey) => {
-          return <CreatedForm survey={survey} key={survey.surveyId} />;
+          return <CreatedForm survey={survey} key={survey.surveyId} currentUserIndex={currentUserIndex} />;
         })}
       </div>
     </div>

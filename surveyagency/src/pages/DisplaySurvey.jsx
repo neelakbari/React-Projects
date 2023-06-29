@@ -1,93 +1,48 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import "../scss/Preview.scss";
-import { useDispatch, useSelector } from "react-redux";
-import Question from "./viewComponents/Question";
 import { Button, message } from "antd";
-import { ArrowDownOutlined, ArrowUpOutlined ,WarningFilled   } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  WarningFilled,
+} from "@ant-design/icons";
 import { DropDownData } from "../data";
-import Components from "./InputComponents";
+import Components from "../components/InputComponents";
 import { openModal, updateSurveyData } from "../redux/reducers/surveySlice";
+import Question from "../components/viewComponents/Question";
 
-
-const PreviewPage = ({ currentUserIndex, surveyData }) => {
-  const { createId } = useParams();
-  const [pageIndex, setPageIndex] = useState(0);
+const DisplaySurvey = () => {
+  const { surveyId } = useParams();
+  let database = JSON.parse(localStorage.getItem("dataBase"));
+  const [pageIndex, setpageIndex] = useState(0);
+  const [error, setError] = useState("")
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  let currentUserIndex = database.findIndex(
+    (user) => user.email === currentUser.email
+  );
+  const surveyData = useSelector((state) =>
+    state.survey[currentUserIndex].data.find(
+      (survey) => survey.surveyId === surveyId
+    )
+  ).surveyData;
   const dropDown = DropDownData.filter((data) => {
     return data.id === +surveyData?.page[pageIndex].dropDownId;
   })?.[0];
   const ComponentToRender = Components[dropDown.component];
-  const dispatch = useDispatch();
-  const [error, setError] = useState("");
+  console.log(surveyData);
 
-  const handleChange = (type) => {
-    if (surveyData.page[pageIndex]?.required && !surveyData.page[pageIndex].answer) {
-      setError("This answer is required");
-      return false;
-    }
-    type === "prev" && pageIndex !== 0
-      ? setPageIndex(pageIndex - 1)
-      : setPageIndex(pageIndex + 1);
-  };
-  const handleAnswer = (answer) => {
-    surveyData = { ...surveyData, page: [...surveyData.page] };
-    surveyData.page[pageIndex] = {
-      ...surveyData.page[pageIndex],
-      answer: answer,
-    };
-    // setSurvey(temp);
-    console.log(answer);
-    console.log(surveyData);
-    dispatch(updateSurveyData({ surveyId: createId, value: surveyData }));
-    if (answer) {
-      setError("");
-    }
-  };
 
-  const handleSubmit = (event) => {
-    let answer = surveyData.page[pageIndex].answer;
-    const temp = { ...surveyData };
-    surveyData = { ...surveyData, page: [...surveyData.page] };
-
-    if (!answer && surveyData.page[pageIndex].required) {
-      setError("Thisdsfsd  answer is required");
-    } else {
-      if (surveyData.page.length === pageIndex + 1) {
-        if (false) {
-          let response = {};
-          const id = uuidv4();
-          response = survey.page.map((data) => {
-            return {
-              ...response,
-              id,
-              question: data.question,
-              answer: data.answer,
-              date: moment().format("MMMM Do YYYY, h:mm:ss a"),
-            };
-          });
-          db.collection("workspace")
-            .doc(surveyID)
-            .update({
-              response: firebase.firestore.FieldValue.arrayUnion(...response),
-            })
-            .then(() => {
-              history.push("/thank-you");
-            })
-            .catch((error) => {
-              message.warning("Failed to save your response", error);
-            });
-        } else {
-          alert("View Done");
-          dispatch(openModal({ surveyId: createId }));
-        }
+  const handleChange=(type)=>{
+    if(surveyData?.page[pageIndex]?.required && !surveyData?.page[pageIndex].answer){
+        setError("This is required");
         return false;
-      } else {
-        handleChange("next");
-      }
     }
-  };
-
+    type === "prev"? pageIndex > 0 && setpageIndex((prev)=>prev -1) : pageIndex<surveyData.page.length-1 && setpageIndex((prev)=>prev+1)
+  }
   return (
+    
     <div
       className={`container ${
         surveyData?.page[pageIndex]?.layout === 3 ? "container_layout" : ""
@@ -96,7 +51,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
       {surveyData?.page?.[pageIndex] && (
         <>
           <div
-            id={`${createId ? "preview_mode" : ""}`}
+            id={`${surveyId ? "preview_mode" : ""}`}
             className={`container_preview  ${
               surveyData.page[pageIndex]?.layout === 2
                 ? "container_layout_two"
@@ -104,7 +59,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
             }`}
           >
             <div
-              id={`${createId ? "preview_mode" : ""}`}
+              id={`${surveyId ? "preview_mode" : ""}`}
               className={`image_wrapper ${
                 surveyData.page[pageIndex]?.layout === 3
                   ? "container_preview_layout_three"
@@ -117,7 +72,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
               />
             </div>
             <div
-              id={`${createId ? "preview_mode" : ""}`}
+              id={`${surveyId ? "preview_mode" : ""}`}
               className="container_preview_right"
             >
               <div className="preview__right__question">
@@ -131,7 +86,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
                 <ComponentToRender
                   preview={true}
                   currentUserIndex={currentUserIndex}
-                  handleAnswer={handleAnswer}
+                //   handleAnswer={handleAnswer}
                   answer={surveyData.page[pageIndex].answer}
                   setError={setError}
                 />
@@ -165,13 +120,13 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
                 )}
               <div className="container_submit_changePage">
                 <Button
-                  disabled={pageIndex === surveyData.page.length - 1}
+                //   disabled={pageIndex === surveyData.page.length - 1}
                   onClick={() => handleChange("next")}
                 >
                   <ArrowDownOutlined />
                 </Button>
                 <Button
-                  disabled={pageIndex === 0}
+                //   disabled={pageIndex === 0}
                   onClick={() => handleChange("prev")}
                 >
                   <ArrowUpOutlined />
@@ -185,4 +140,4 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
   );
 };
 
-export default PreviewPage;
+export default DisplaySurvey;

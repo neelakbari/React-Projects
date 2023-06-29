@@ -2,15 +2,27 @@ import React from "react";
 import { Input } from "antd";
 import { ForwardOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { changeInput } from "../../redux/reducers/surverDataSlice";
+import { useParams } from "react-router-dom";
+import { changeInput } from "../../redux/reducers/surveySlice";
 
-const Question = ({preview=false,pageIndex}) => {
-  const surveyPages = useSelector((state) => state.surveyData.page);
+const Question = ({ preview = false, pageIndex, currentUserIndex }) => {
+  const { createId } = useParams();
+  const { surveyId } = useParams();
+  console.log(surveyId)
+  const surveyData = useSelector((state) =>{
+  return  state.survey[currentUserIndex].data.find(
+      (survey) => survey.surveyId === surveyId || createId
+    )
+}).surveyData;
+
+
+  const surveyPages = surveyData.page;
   let currentIndex;
-  preview ?(currentIndex = pageIndex ): (currentIndex = useSelector((state) =>
-    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
-  ))
-  
+  preview
+    ? (currentIndex = pageIndex)
+    : (currentIndex = surveyPages.findIndex(
+        (data) => data.id === surveyData.currentPage
+      ));
   const dispatch = useDispatch();
   return (
     <div className="question">
@@ -22,7 +34,7 @@ const Question = ({preview=false,pageIndex}) => {
         <div className="question__right__textInput">
           <Input
             onChange={(e) =>
-              dispatch(changeInput({type:"question",value:e.target.value}))
+              dispatch(changeInput({surveyId:createId, type: "question", value: e.target.value }))
             }
             type="text"
             value={surveyPages[currentIndex]?.question}
@@ -30,7 +42,9 @@ const Question = ({preview=false,pageIndex}) => {
           />
           <Input
             onChange={(e) =>
-              dispatch(changeInput({type:"description",value:e.target.value}))
+              dispatch(
+                changeInput({surveyId:createId, type: "description", value: e.target.value })
+              )
             }
             type="text"
             placeholder="Description (optional)"

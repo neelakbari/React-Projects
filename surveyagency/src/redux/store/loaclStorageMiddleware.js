@@ -3,7 +3,6 @@ const localStorageMiddleware = (store) => (next) => (action) => {
 
   // Get the updated state
   const state = store.getState();
-
   const currentIndex = state.survey.findIndex(
     (user) =>
       user.email === JSON.parse(localStorage.getItem("currentUser")).email
@@ -27,7 +26,6 @@ const localStorageMiddleware = (store) => (next) => (action) => {
     }
     localStorage.setItem("dataBase", JSON.stringify(localStorageData));
   }
-
   return result;
 };
 

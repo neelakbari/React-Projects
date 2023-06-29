@@ -2,9 +2,11 @@ import React from "react";
 import { Input, Select, Switch, Upload, Button, Popover } from "antd";
 import { EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import "../scss/View.scss";
+import LinkGenerator from "./LinkGenerator"
 import { left_align } from "../assets";
 import { DropDownData, LayoutData } from "../data";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
   changeName,
   dropDownId,
@@ -12,22 +14,26 @@ import {
   layoutChange,
   openModal,
   required,
-} from "../redux/reducers/surverDataSlice";
+} from "../redux/reducers/surveySlice";
 
 const { Option } = Select;
 
-const ChangesBar = ({  dropDown }) => {
-  const surveyPages = useSelector((state) => state.surveyData.page);
+const ChangesBar = ({ dropDown, currentUserIndex }) => {
+  const { createId } = useParams();
 
-  const surveyData = useSelector((state) => state.surveyData);
-  const currentIndex = useSelector((state) =>
-    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
+  const surveyData = useSelector((state) =>
+    state.survey[currentUserIndex].data.find(
+      (survey) => survey.surveyId === createId
+    )
+  ).surveyData;
+  const surveyPages = surveyData.page;
+  const currentIndex = surveyPages.findIndex(
+    (data) => data.id === surveyData.currentPage
   );
+  // console.log(surveyData)
+  // console.log(surveyPages)
+  // console.log(currentIndex)
   const dispatch = useDispatch();
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -35,7 +41,7 @@ const ChangesBar = ({  dropDown }) => {
 
     reader.onload = () => {
       const imageSrc = reader.result;
-      dispatch(fileUpload(imageSrc));
+      dispatch(fileUpload({ surveyId: createId, value: imageSrc }));
     };
 
     if (file) {
@@ -48,14 +54,21 @@ const ChangesBar = ({  dropDown }) => {
         <Input
           type="text"
           value={surveyData.surveyName}
-          onChange={(e) => dispatch(changeName(e.target.value))}
+          onChange={(e) =>
+            dispatch(changeName({ surveyId: createId, value: e.target.value }))
+          }
           placeholder="survey name"
           prefix={<img src={left_align} alt="" />}
         />
       </div>
       <div className="bar_type">
         <span>Type</span>
-        <Select onChange={(e) => dispatch(dropDownId(e))} value={dropDown.type}>
+        <Select
+          onChange={(e) =>
+            dispatch(dropDownId({ surveyId: createId, value: e }))
+          }
+          value={dropDown.type}
+        >
           {DropDownData.map((type) => (
             <Option key={type.id}>{type.type}</Option>
           ))}
@@ -66,7 +79,9 @@ const ChangesBar = ({  dropDown }) => {
           <span>Required</span>
           <div>
             <Switch
-              onChange={(e) => dispatch(required(e))}
+              onChange={(e) =>
+                dispatch(required({ surveyId: createId, value: e }))
+              }
               checked={surveyData.page[currentIndex].required}
             />
           </div>
@@ -94,7 +109,13 @@ const ChangesBar = ({  dropDown }) => {
               <div
                 key={data.id}
                 onClick={() =>
-                  dispatch(layoutChange({ index: currentIndex, id: data.id }))
+                  dispatch(
+                    layoutChange({
+                      surveyId: createId,
+                      index: currentIndex,
+                      id: data.id,
+                    })
+                  )
                 }
                 id={`${
                   surveyData.page[currentIndex].layout === data.id
@@ -112,10 +133,19 @@ const ChangesBar = ({  dropDown }) => {
       <div className="action">
         <button
           className="action_preview"
-          onClick={() => dispatch(openModal())}
+          onClick={() => dispatch(openModal({ surveyId: createId }))}
         >
           <EyeOutlined />
         </button>
+        <Popover
+                    content={<LinkGenerator />}
+                    title="Get the Link"
+                    trigger="click"
+                    // visible={linkPopup}
+                    // onClick={() => handlePublish()} 
+                >
+                <button className="action_publish">Publish</button>
+                </Popover>
       </div>
     </div>
   );
