@@ -13,7 +13,10 @@ import WorkspaceLayout from "./layouts/WorkspaceLayout";
 import Workspace from "./pages/Workspace";
 import CreateSurvey from "./pages/CreateSurvey";
 
+import DisplaySurvey from "./pages/DisplaySurvey";
+
 const App = () => {
+  
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
@@ -26,6 +29,7 @@ const App = () => {
       <Route index element={<Workspace/>}/>
       <Route  path="create/:createId" element={<CreateSurvey/>}/>
       </Route>
+      <Route path="/survey/:surveyId" element={<DisplaySurvey/>}></Route>
       </>
     )
   );

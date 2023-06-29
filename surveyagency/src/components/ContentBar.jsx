@@ -10,15 +10,12 @@ import CustomIcon from "../components/CustomIcon";
 
 import { useParams } from "react-router-dom";
 import { addPage, changeCurrent, deletePage } from "../redux/reducers/surveySlice";
-const ContentBar = () => {
+const ContentBar = ({currentUserIndex}) => {
   const { createId } = useParams();
-  const surveyData = useSelector((state) =>
-    state.survey[1].data.find((survey) => survey.surveyId === createId)
-  ).surveyData;
-  // const surveyData = useSelector((state)=>state.surveyData);
   const dispatch = useDispatch();
-  // console.log(surveyData)
-  // console.log(survey)
+  const surveyData = useSelector((state) =>
+    state.survey[currentUserIndex].data.find((survey) => survey.surveyId === createId)
+  ).surveyData;
   return (
     <>
       <div className="content_bar">

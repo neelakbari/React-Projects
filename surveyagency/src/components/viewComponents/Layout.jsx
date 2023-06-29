@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Question from "./Question";
 import "../../scss/View.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const Layout = ({ ComponentToRender, disabled }) => {
-  const surveyPages = useSelector((state) => state.surveyData.page);
-  const surveyData = useSelector((state) => state.surveyData);
-  const currentIndex = useSelector((state) =>
-    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
-  );
-  const [option, setoption] = useState([]);
-  useEffect(() => {
-    setoption(surveyPages[currentIndex].option);
-  }, [surveyPages[currentIndex].option]);
+const Layout = ({ ComponentToRender, disabled, currentUserIndex }) => {
+  const { createId } = useParams();
+
+  const surveyData = useSelector((state) =>
+    state.survey[currentUserIndex].data.find(
+      (survey) => survey.surveyId === createId
+    )
+  ).surveyData;
+  const surveyPages = surveyData.page;
+  const currentIndex = surveyPages.findIndex((data) => data.id === surveyData.currentPage);
+  // const [option, setoption] = useState([]);
+  // useEffect(() => {
+  //   setoption(surveyPages[currentIndex].option);
+  // }, [surveyPages[currentIndex].option]);
   return (
     <div
       className={`layout_one ${
@@ -33,12 +38,10 @@ const Layout = ({ ComponentToRender, disabled }) => {
       </div>
       <div className="input_wrapper">
         <div className="Question">
-          <Question />
+          <Question currentUserIndex={currentUserIndex} />
         </div>
         <div className="answer">
-          <ComponentToRender
-            disabled={disabled}
-          />
+          <ComponentToRender disabled={disabled} currentUserIndex={currentUserIndex} />
         </div>
       </div>
     </div>

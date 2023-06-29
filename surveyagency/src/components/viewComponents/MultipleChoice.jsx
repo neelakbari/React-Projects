@@ -7,7 +7,8 @@ import {
   addOption,
   deleteOption,
   updateOption,
-} from "../../redux/reducers/surverDataSlice";
+} from "../../redux/reducers/surveySlice";
+import { useParams } from "react-router-dom";
 
 const MulitipleChoice = ({
   survey,
@@ -15,10 +16,19 @@ const MulitipleChoice = ({
   type,
   option,
   preview = false,
+  currentUserIndex,
 }) => {
-  const surveyPages = useSelector((state) => state.surveyData.page);
-  const currentIndex = useSelector((state) =>
-    surveyPages.findIndex((data) => data.id === state.surveyData.currentPage)
+  const { createId } = useParams();
+  const { surveyId } = useParams();
+
+  const surveyData = useSelector((state) =>
+    state.survey[currentUserIndex].data.find(
+      (survey) => survey.surveyId === surveyId || createId
+    )
+  ).surveyData;
+  const surveyPages = surveyData.page;
+  const currentIndex = surveyPages.findIndex(
+    (data) => data.id === surveyData.currentPage
   );
   const dispatch = useDispatch();
   return (
@@ -31,7 +41,7 @@ const MulitipleChoice = ({
               <Input
                 onChange={(e) =>
                   dispatch(
-                    updateOption({
+                    updateOption({surveyId:createId,
                       index: currentIndex,
                       value: e.target.value,
                       id: data.id,
@@ -45,22 +55,20 @@ const MulitipleChoice = ({
               {!preview && (
                 <CloseCircleOutlined
                   onClick={() =>
-                    dispatch(deleteOption({ index: currentIndex, id: data.id }))
+                    dispatch(deleteOption({surveyId:createId, index: currentIndex, id: data.id }))
                   }
                   className="choice_icon"
                   value={data.value}
                 />
               )}
-              {preview  && (
-                <CheckOutlined className="choice_icon" />
-              )}
+              {preview && <CheckOutlined className="choice_icon" />}
             </div>
           );
         })}
       </div>
       {!preview && (
         <div
-          onClick={() => dispatch(addOption({ index: currentIndex }))}
+          onClick={() => dispatch(addOption({surveyId:createId, index: currentIndex }))}
           className="multiplechoice_add"
         >
           Add choice
