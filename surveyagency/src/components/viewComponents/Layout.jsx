@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 
 const Layout = ({ ComponentToRender, disabled, currentUserIndex }) => {
   const { createId } = useParams();
-  console.log(createId)
   const surveyData = useSelector((state) =>
     state.survey[currentUserIndex].data.find(
       (survey) => survey.surveyId === createId

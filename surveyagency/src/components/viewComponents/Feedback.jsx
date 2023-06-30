@@ -2,15 +2,14 @@ import React from "react";
 import { feedback1, feedback2, feedback3, feedback4, feedback5 } from "../../assets";
 import "../../scss/View.scss"
 
-const Feedback = () => {
+const Feedback = ({answer,disabled,handleAnswer,setError,preview=false}) => {
   const handleChange = (rating) => {
-    if (!disabled) {
+    if (!disabled && preview) {
       handleAnswer(rating);
       setError("");
     }
   };
   const feed = [feedback1,feedback2,feedback3,feedback4,feedback5];
-  const answer = 1;
   return (
     <div className="Feedback">
       <div className="Feedback__wrapper">
