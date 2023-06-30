@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import "../scss/Preview.scss";
-import { Button, message } from "antd";
+import { Button} from "antd";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -12,6 +11,7 @@ import { DropDownData } from "../data";
 import Components from "../components/InputComponents";
 import { openModal, updateSurveyData } from "../redux/reducers/surveySlice";
 import Question from "../components/viewComponents/Question";
+import "../scss/DisplaySurvey.scss"
 
 const DisplaySurvey = () => {
   const { surveyId } = useParams();
@@ -44,25 +44,26 @@ const DisplaySurvey = () => {
   return (
     
     <div
-      className={`container ${
-        surveyData?.page[pageIndex]?.layout === 3 ? "container_layout" : ""
-      }`}
+      className={`container`}
     >
+
+      <div className="survey_title">
+        <h1>{surveyData.surveyName}</h1>
+      </div>
       {surveyData?.page?.[pageIndex] && (
         <>
           <div
-            id={`${surveyId ? "preview_mode" : ""}`}
-            className={`container_preview  ${
+            id={`${surveyId ? "display_mode" : ""}`}
+            className={`display_container  ${
               surveyData.page[pageIndex]?.layout === 2
-                ? "container_layout_two"
+                ? "layout_two"
                 : ""
             }`}
           >
             <div
-              id={`${surveyId ? "preview_mode" : ""}`}
               className={`image_wrapper ${
                 surveyData.page[pageIndex]?.layout === 3
-                  ? "container_preview_layout_three"
+                  ? "layout_three"
                   : ""
               }`}
             >
@@ -72,17 +73,20 @@ const DisplaySurvey = () => {
               />
             </div>
             <div
-              id={`${surveyId ? "preview_mode" : ""}`}
-              className="container_preview_right"
+              className={`display_right ${
+                surveyData.page[pageIndex]?.layout === 3
+                  ? "layout_three"
+                  : ""
+              }`}
             >
-              <div className="preview__right__question">
+              <div className="right_question">
                 <Question
                   preview={true}
                   pageIndex={pageIndex}
                   currentUserIndex={currentUserIndex}
                 />
               </div>
-              <div className="container_preview_right_answer">
+              <div className="right_answer">
                 <ComponentToRender
                   preview={true}
                   currentUserIndex={currentUserIndex}
@@ -91,7 +95,7 @@ const DisplaySurvey = () => {
                   setError={setError}
                 />
               </div>
-              <div className="container_preview_right_submit">
+              <div className="right_submit">
                 <button
                   onClick={(e) => {
                     handleSubmit(e);
@@ -102,23 +106,23 @@ const DisplaySurvey = () => {
               </div>
 
               {error && (
-                <div className="container_preview_right_error">
+                <div className="right_error">
                   <WarningFilled />
                   <span>{error}</span>
                 </div>
               )}
             </div>
-            <div className="container_submit">
+            <div className="submit">
               {!surveyData.page[pageIndex]?.required &&
                 pageIndex !== surveyData.page.length - 1 && (
-                  <button
+                  <Button
                     onClick={() => handleChange("next")}
-                    className="container_submit_skip"
+                    className="submit_skip"
                   >
                     Skip
-                  </button>
+                  </Button>
                 )}
-              <div className="container_submit_changePage">
+              <div className="submit_changePage">
                 <Button
                 //   disabled={pageIndex === surveyData.page.length - 1}
                   onClick={() => handleChange("next")}

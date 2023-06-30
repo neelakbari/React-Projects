@@ -104,7 +104,6 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
             }`}
           >
             <div
-              id={`${createId ? "preview_mode" : ""}`}
               className={`image_wrapper ${
                 surveyData.page[pageIndex]?.layout === 3
                   ? "container_preview_layout_three"
@@ -117,7 +116,6 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
               />
             </div>
             <div
-              id={`${createId ? "preview_mode" : ""}`}
               className="container_preview_right"
             >
               <div className="preview__right__question">
