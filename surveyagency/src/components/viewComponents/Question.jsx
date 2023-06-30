@@ -8,21 +8,20 @@ import { changeInput } from "../../redux/reducers/surveySlice";
 const Question = ({ preview = false, pageIndex, currentUserIndex }) => {
   const { createId } = useParams();
   const { surveyId } = useParams();
-  console.log(surveyId)
   const surveyData = useSelector((state) =>{
   return  state.survey[currentUserIndex].data.find(
-      (survey) => survey.surveyId === surveyId || createId
-    )
+      (survey) => { 
+        return survey.surveyId === createId || surveyId
+      })
 }).surveyData;
+const surveyPages = surveyData.page;
 
-
-  const surveyPages = surveyData.page;
-  let currentIndex;
-  preview
-    ? (currentIndex = pageIndex)
-    : (currentIndex = surveyPages.findIndex(
-        (data) => data.id === surveyData.currentPage
-      ));
+let currentIndex;
+preview
+? (currentIndex = pageIndex)
+: (currentIndex = surveyPages.findIndex(
+  (data) => data.id === surveyData.currentPage
+  ));
   const dispatch = useDispatch();
   return (
     <div className="question">

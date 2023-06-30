@@ -5,7 +5,7 @@ import localStorageMiddleware from "./loaclStorageMiddleware";
 
 const rootReducer = combineReducers({
     survey:surveySlice,
-    surveyData:surveyDataSlice,
+    
 })
 const middleware = [...getDefaultMiddleware(), localStorageMiddleware];
 const store = configureStore({

@@ -1,5 +1,5 @@
 import { Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { CloseCircleOutlined, CheckOutlined } from "@ant-design/icons";
 import "../../scss/View.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,15 +15,18 @@ const MulitipleChoice = ({
   disabled,
   type,
   option,
+  handleAnswer= null,
   preview = false,
   currentUserIndex,
+  answer
 }) => {
   const { createId } = useParams();
   const { surveyId } = useParams();
-
+  console.log(answer)
+  // const [answer, setanswer] = useState(false)
   const surveyData = useSelector((state) =>
     state.survey[currentUserIndex].data.find(
-      (survey) => survey.surveyId === surveyId || createId
+      (survey) => survey.surveyId === createId || surveyId
     )
   ).surveyData;
   const surveyPages = surveyData.page;
@@ -36,7 +39,7 @@ const MulitipleChoice = ({
       <div className="multiple_choice_wrapper">
         {surveyPages[currentIndex].option?.map((data) => {
           return (
-            <div className="choice" key={data.id}>
+            <div onClick={()=>handleAnswer?.(data.value)} className={`choice ${data.value === answer ? "choice_active":""}`} key={data.id}>
               <span className="choice_number">{data.id}</span>
               <Input
                 onChange={(e) =>
@@ -61,7 +64,7 @@ const MulitipleChoice = ({
                   value={data.value}
                 />
               )}
-              {preview && <CheckOutlined className="choice_icon" />}
+              {preview && answer === data.value && <CheckOutlined className="choice_icon" />}
             </div>
           );
         })}

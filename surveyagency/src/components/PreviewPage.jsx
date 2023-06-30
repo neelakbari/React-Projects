@@ -11,6 +11,7 @@ import { openModal, updateSurveyData } from "../redux/reducers/surveySlice";
 
 
 const PreviewPage = ({ currentUserIndex, surveyData }) => {
+
   const { createId } = useParams();
   const [pageIndex, setPageIndex] = useState(0);
   const dropDown = DropDownData.filter((data) => {
@@ -36,17 +37,16 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
       answer: answer,
     };
     // setSurvey(temp);
-    console.log(answer);
-    console.log(surveyData);
+    // console.log(answer);
+    // console.log(surveyData);
     dispatch(updateSurveyData({ surveyId: createId, value: surveyData }));
     if (answer) {
       setError("");
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = () => {
     let answer = surveyData.page[pageIndex].answer;
-    const temp = { ...surveyData };
     surveyData = { ...surveyData, page: [...surveyData.page] };
 
     if (!answer && surveyData.page[pageIndex].required) {
@@ -104,7 +104,6 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
             }`}
           >
             <div
-              id={`${createId ? "preview_mode" : ""}`}
               className={`image_wrapper ${
                 surveyData.page[pageIndex]?.layout === 3
                   ? "container_preview_layout_three"
@@ -117,7 +116,6 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
               />
             </div>
             <div
-              id={`${createId ? "preview_mode" : ""}`}
               className="container_preview_right"
             >
               <div className="preview__right__question">

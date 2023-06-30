@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Select, Switch, Upload, Button, Popover } from "antd";
 import { EyeOutlined, UploadOutlined } from "@ant-design/icons";
 import "../scss/View.scss";
-import LinkGenerator from "./LinkGenerator"
+import LinkGenerator from "./LinkGenerator";
 import { left_align } from "../assets";
 import { DropDownData, LayoutData } from "../data";
 import { useDispatch, useSelector } from "react-redux";
@@ -138,14 +138,14 @@ const ChangesBar = ({ dropDown, currentUserIndex }) => {
           <EyeOutlined />
         </button>
         <Popover
-                    content={<LinkGenerator />}
-                    title="Get the Link"
-                    trigger="click"
-                    // visible={linkPopup}
-                    // onClick={() => handlePublish()} 
-                >
-                <button className="action_publish">Publish</button>
-                </Popover>
+          content={<LinkGenerator />}
+          title="Get the Link"
+          trigger="click"
+          // visible={linkPopup}
+          // onClick={() => handlePublish()}
+        >
+          <button className="action_publish">Publish</button>
+        </Popover>
       </div>
     </div>
   );
