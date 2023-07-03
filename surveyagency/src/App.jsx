@@ -14,6 +14,7 @@ import Workspace from "./pages/Workspace";
 import CreateSurvey from "./pages/CreateSurvey";
 
 import DisplaySurvey from "./pages/DisplaySurvey";
+import Thankyou from "./pages/ThankYou";
 
 const App = () => {
   
@@ -24,6 +25,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/thankyou" element={<Thankyou />} />
       </Route>
       <Route path="/workspace" element={<WorkspaceLayout/>}>
       <Route index element={<Workspace/>}/>

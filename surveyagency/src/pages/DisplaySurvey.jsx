@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Button} from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button } from "antd";
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
@@ -9,20 +9,25 @@ import {
 } from "@ant-design/icons";
 import { DropDownData } from "../data";
 import Components from "../components/InputComponents";
-import { openModal, updateSurveyData } from "../redux/reducers/surveySlice";
 import Question from "../components/viewComponents/Question";
-import "../scss/DisplaySurvey.scss"
+import "../scss/DisplaySurvey.scss";
+import { pushResponse, updateSurveyData } from "../redux/reducers/surveySlice";
+import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
+
 
 const DisplaySurvey = () => {
   const { surveyId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   let database = JSON.parse(localStorage.getItem("dataBase"));
   const [pageIndex, setpageIndex] = useState(0);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const currentUser = JSON.parse(localStorage.getItem("currentUser"));
   let currentUserIndex = database.findIndex(
     (user) => user.email === currentUser.email
   );
-  const surveyData = useSelector((state) =>
+  let surveyData = useSelector((state) =>
     state.survey[currentUserIndex].data.find(
       (survey) => survey.surveyId === surveyId
     )
@@ -33,20 +38,63 @@ const DisplaySurvey = () => {
   const ComponentToRender = Components[dropDown.component];
   console.log(surveyData);
 
-
-  const handleChange=(type)=>{
-    if(surveyData?.page[pageIndex]?.required && !surveyData?.page[pageIndex].answer){
-        setError("This is required");
-        return false;
+  const handleChange = (type) => {
+    if (
+      surveyData?.page[pageIndex]?.required &&
+      !surveyData?.page[pageIndex].answer
+    ) {
+      setError("This is required");
+      return false;
     }
-    type === "prev"? pageIndex > 0 && setpageIndex((prev)=>prev -1) : pageIndex<surveyData.page.length-1 && setpageIndex((prev)=>prev+1)
-  }
-  return (
-    
-    <div
-      className={`container`}
-    >
+    type === "prev"
+      ? pageIndex > 0 && setpageIndex((prev) => prev - 1)
+      : pageIndex < surveyData.page.length - 1 &&
+        setpageIndex((prev) => prev + 1);
+  };
 
+  const handleAnswer = (answer) => {
+    surveyData = { ...surveyData, page: [...surveyData.page] };
+    surveyData.page[pageIndex] = {
+      ...surveyData.page[pageIndex],
+      answer: answer,
+    };
+    // setSurvey(temp);
+    // console.log(answer);
+    // console.log(surveyData);
+    dispatch(updateSurveyData({ surveyId: surveyId, value: surveyData }));
+    if (answer) {
+      setError("");
+    }
+  };
+  const handleSubmit = () => {
+    let answer = surveyData.page[pageIndex].answer;
+    surveyData = { ...surveyData, page: [...surveyData.page] };
+
+    if (!answer && surveyData.page[pageIndex].required) {
+      setError("Thisdsfsd  answer is required");
+    } else {
+      if (surveyData.page.length === pageIndex + 1) {
+        let response = {};
+        const id = uuidv4();
+        response = surveyData.page.map((data) => {
+          return {
+            ...response,
+            id,
+            question: data.question,
+            answer: data.answer,
+            date: moment().format("MMMM Do YYYY, h:mm:ss a"),
+          };
+        });
+        dispatch(pushResponse({surveyId:surveyId,value:response}))
+        alert("response submitted")
+        navigate("/thankyou")
+      } else {
+        handleChange("next");
+      }
+    }
+  };
+  return (
+    <div className={`container`}>
       <div className="survey_title">
         <h1>{surveyData.surveyName}</h1>
       </div>
@@ -55,16 +103,12 @@ const DisplaySurvey = () => {
           <div
             id={`${surveyId ? "display_mode" : ""}`}
             className={`display_container  ${
-              surveyData.page[pageIndex]?.layout === 2
-                ? "layout_two"
-                : ""
+              surveyData.page[pageIndex]?.layout === 2 ? "layout_two" : ""
             }`}
           >
             <div
               className={`image_wrapper ${
-                surveyData.page[pageIndex]?.layout === 3
-                  ? "layout_three"
-                  : ""
+                surveyData.page[pageIndex]?.layout === 3 ? "layout_three" : ""
               }`}
             >
               <img
@@ -74,9 +118,7 @@ const DisplaySurvey = () => {
             </div>
             <div
               className={`display_right ${
-                surveyData.page[pageIndex]?.layout === 3
-                  ? "layout_three"
-                  : ""
+                surveyData.page[pageIndex]?.layout === 3 ? "layout_three" : ""
               }`}
             >
               <div className="right_question">
@@ -90,7 +132,7 @@ const DisplaySurvey = () => {
                 <ComponentToRender
                   preview={true}
                   currentUserIndex={currentUserIndex}
-                //   handleAnswer={handleAnswer}
+                  handleAnswer={handleAnswer}
                   answer={surveyData.page[pageIndex].answer}
                   setError={setError}
                 />
@@ -123,16 +165,10 @@ const DisplaySurvey = () => {
                   </Button>
                 )}
               <div className="submit_changePage">
-                <Button
-                //   disabled={pageIndex === surveyData.page.length - 1}
-                  onClick={() => handleChange("next")}
-                >
+                <Button onClick={() => handleChange("next")}>
                   <ArrowDownOutlined />
                 </Button>
-                <Button
-                //   disabled={pageIndex === 0}
-                  onClick={() => handleChange("prev")}
-                >
+                <Button onClick={() => handleChange("prev")}>
                   <ArrowUpOutlined />
                 </Button>
               </div>

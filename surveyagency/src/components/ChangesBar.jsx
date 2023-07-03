@@ -141,8 +141,6 @@ const ChangesBar = ({ dropDown, currentUserIndex }) => {
           content={<LinkGenerator />}
           title="Get the Link"
           trigger="click"
-          // visible={linkPopup}
-          // onClick={() => handlePublish()}
         >
           <button className="action_publish">Publish</button>
         </Popover>

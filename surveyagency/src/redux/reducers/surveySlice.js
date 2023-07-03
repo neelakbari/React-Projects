@@ -182,13 +182,21 @@ const surveySlice = createSlice({
           .map((data, index) => ({ ...data, id: index + 1 }));
       }
     },
-    updateSurveyData:(state,action)=>{
-      
+    updateSurveyData: (state, action) => {
       const currentIndex = currentUserIndex();
       state[currentIndex].data.find(
         (survey) => survey.surveyId === action.payload.surveyId
       ).surveyData = action.payload.value;
-    }
+    },
+    pushResponse: (state, action) => {
+      console.log(action.payload)
+      const currentIndex = currentUserIndex();
+      const survey = state[currentIndex].data.find(
+        (survey) => survey.surveyId === action.payload.surveyId
+        );
+        console.log(survey.response)
+        survey.response = [...survey.response,...action.payload.value]
+    },
   },
 });
 
@@ -211,5 +219,6 @@ export const {
   deleteOption,
   handleAnswer,
   updateSurveyData,
+  pushResponse,
 } = surveySlice.actions;
 export default surveySlice.reducer;
