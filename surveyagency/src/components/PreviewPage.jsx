@@ -36,9 +36,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
       ...surveyData.page[pageIndex],
       answer: answer,
     };
-    // setSurvey(temp);
-    // console.log(answer);
-    // console.log(surveyData);
+    
     dispatch(updateSurveyData({ surveyId: createId, value: surveyData }));
     if (answer) {
       setError("");
@@ -128,6 +126,7 @@ const PreviewPage = ({ currentUserIndex, surveyData }) => {
               <div className="container_preview_right_answer">
                 <ComponentToRender
                   preview={true}
+                  pageIndex={pageIndex}
                   currentUserIndex={currentUserIndex}
                   handleAnswer={handleAnswer}
                   answer={surveyData.page[pageIndex].answer}

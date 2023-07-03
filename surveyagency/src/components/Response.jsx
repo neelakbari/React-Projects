@@ -20,7 +20,6 @@ const Response = ({ survey }) => {
       key: "Date",
     },
   ];
-  console.log(dataSource);
   return <Table dataSource={dataSource} columns={columns}/>
 };
 

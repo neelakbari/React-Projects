@@ -7,7 +7,6 @@ const LinkGenerator = () => {
     const {createId} = useParams();
     const handleCopy =()=>{
         const link = `${window.location.origin}/survey/${createId}`;
-        console.log(link)
         navigator.clipboard.writeText(link);
         alert("link copied successfully")
     }

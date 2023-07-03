@@ -18,21 +18,27 @@ const MulitipleChoice = ({
   handleAnswer= null,
   preview = false,
   currentUserIndex,
-  answer
+  answer,
+  pageIndex,
 }) => {
   const { createId } = useParams();
   const { surveyId } = useParams();
-  console.log(answer)
-  // const [answer, setanswer] = useState(false)
-  const surveyData = useSelector((state) =>
-    state.survey[currentUserIndex].data.find(
-      (survey) => survey.surveyId === createId || surveyId
-    )
-  ).surveyData;
+  const surveyData = useSelector((state) => {
+    return state.survey[currentUserIndex].data.find((survey) => {
+      if (surveyId) {
+        return survey.surveyId === surveyId;
+      } else {
+        return survey.surveyId === createId;
+      }
+    });
+  }).surveyData;
   const surveyPages = surveyData.page;
-  const currentIndex = surveyPages.findIndex(
-    (data) => data.id === surveyData.currentPage
-  );
+  let currentIndex;
+  preview
+    ? (currentIndex = pageIndex)
+    : (currentIndex = surveyPages.findIndex(
+        (data) => data.id === surveyData.currentPage
+      ));
   const dispatch = useDispatch();
   return (
     <div className="multiple_choice">

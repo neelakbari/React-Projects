@@ -36,7 +36,6 @@ const DisplaySurvey = () => {
     return data.id === +surveyData?.page[pageIndex].dropDownId;
   })?.[0];
   const ComponentToRender = Components[dropDown.component];
-  console.log(surveyData);
 
   const handleChange = (type) => {
     if (
@@ -58,9 +57,6 @@ const DisplaySurvey = () => {
       ...surveyData.page[pageIndex],
       answer: answer,
     };
-    // setSurvey(temp);
-    // console.log(answer);
-    // console.log(surveyData);
     dispatch(updateSurveyData({ surveyId: surveyId, value: surveyData }));
     if (answer) {
       setError("");
@@ -131,6 +127,7 @@ const DisplaySurvey = () => {
               <div className="right_answer">
                 <ComponentToRender
                   preview={true}
+                  pageIndex={pageIndex}
                   currentUserIndex={currentUserIndex}
                   handleAnswer={handleAnswer}
                   answer={surveyData.page[pageIndex].answer}

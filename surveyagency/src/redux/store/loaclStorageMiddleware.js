@@ -1,14 +1,15 @@
 const localStorageMiddleware = (store) => (next) => (action) => {
   const result = next(action);
 
-  // Get the updated state
+  
   const state = store.getState();
   const currentIndex = state.survey.findIndex(
     (user) =>
       user.email === JSON.parse(localStorage.getItem("currentUser")).email
   );
-  //   Update the local storage for the respective survey
-  const surveyId = action.payload.surveyId; // Assuming the action payload contains the surveyId
+  
+
+  const surveyId = action.payload.surveyId; 
   const updatedSurvey = state.survey[currentIndex].data.find(
     (survey) => survey.surveyId === surveyId
   );

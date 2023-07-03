@@ -30,9 +30,6 @@ const ChangesBar = ({ dropDown, currentUserIndex }) => {
   const currentIndex = surveyPages.findIndex(
     (data) => data.id === surveyData.currentPage
   );
-  // console.log(surveyData)
-  // console.log(surveyPages)
-  // console.log(currentIndex)
   const dispatch = useDispatch();
 
   const handleFileUpload = (event) => {

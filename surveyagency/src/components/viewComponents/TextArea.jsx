@@ -11,7 +11,7 @@ const Textarea = ({ disabled, answer, handleAnswer, setError }) => {
         disabled={disabled}
         rows={4}
         type="textarea"
-        // value={answer}
+        value={answer}
         placeholder="Type your answer here..."
       />
     </div>
