@@ -5,15 +5,26 @@ import { useSelector } from "react-redux";
 import { DropDownData, getPlaceholder } from "../../data";
 import { useParams } from "react-router-dom";
 
-const TextBox = ({disabled, answer, handleAnswer, setError,currentUserIndex}) => {
+const TextBox = ({disabled, answer, handleAnswer, setError,currentUserIndex,pageIndex,preview=false}) => {
   const { createId } = useParams();
   const { surveyId } = useParams();
-  const surveyData = useSelector((state) =>{
-  return  state.survey[currentUserIndex].data.find(
-      (survey) => survey.surveyId === surveyId || createId
-    )
-}).surveyData;
-  const dropDownType = DropDownData.filter((data)=>data.id ===surveyData.page[surveyData.currentPage -1].dropDownId)[0].type
+  const surveyData = useSelector((state) => {
+    return state.survey[currentUserIndex].data.find((survey) => {
+      if (surveyId) {
+        return survey.surveyId === surveyId;
+      } else {
+        return survey.surveyId === createId;
+      }
+    });
+  }).surveyData;
+  const surveyPages = surveyData.page
+  let currentIndex;
+  preview
+    ? (currentIndex = pageIndex)
+    : (currentIndex = surveyPages.findIndex(
+        (data) => data.id === surveyData.currentPage
+      ));
+  const dropDownType = DropDownData.filter((data)=>data.id ===surveyData.page[currentIndex].dropDownId)[0].type
   const placeholder = getPlaceholder(dropDownType)
   return (
     <div className="textbox">

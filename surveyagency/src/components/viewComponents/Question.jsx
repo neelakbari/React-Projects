@@ -8,20 +8,22 @@ import { changeInput } from "../../redux/reducers/surveySlice";
 const Question = ({ preview = false, pageIndex, currentUserIndex }) => {
   const { createId } = useParams();
   const { surveyId } = useParams();
-  const surveyData = useSelector((state) =>{
-  return  state.survey[currentUserIndex].data.find(
-      (survey) => { 
-        return survey.surveyId === createId || surveyId
-      })
-}).surveyData;
-const surveyPages = surveyData.page;
-
-let currentIndex;
-preview
-? (currentIndex = pageIndex)
-: (currentIndex = surveyPages.findIndex(
-  (data) => data.id === surveyData.currentPage
-  ));
+  const surveyData = useSelector((state) => {
+    return state.survey[currentUserIndex].data.find((survey) => {
+      if (surveyId) {
+        return survey.surveyId === surveyId;
+      } else {
+        return survey.surveyId === createId;
+      }
+    });
+  }).surveyData;
+  const surveyPages = surveyData.page;
+  let currentIndex;
+  preview
+    ? (currentIndex = pageIndex)
+    : (currentIndex = surveyPages.findIndex(
+        (data) => data.id === surveyData.currentPage
+      ));
   const dispatch = useDispatch();
   return (
     <div className="question">
@@ -33,7 +35,13 @@ preview
         <div className="question__right__textInput">
           <Input
             onChange={(e) =>
-              dispatch(changeInput({surveyId:createId, type: "question", value: e.target.value }))
+              dispatch(
+                changeInput({
+                  surveyId: createId,
+                  type: "question",
+                  value: e.target.value,
+                })
+              )
             }
             type="text"
             value={surveyPages[currentIndex]?.question}
@@ -42,7 +50,11 @@ preview
           <Input
             onChange={(e) =>
               dispatch(
-                changeInput({surveyId:createId, type: "description", value: e.target.value })
+                changeInput({
+                  surveyId: createId,
+                  type: "description",
+                  value: e.target.value,
+                })
               )
             }
             type="text"
